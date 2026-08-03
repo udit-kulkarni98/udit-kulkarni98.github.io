@@ -1,0 +1,547 @@
+(() => {
+  'use strict';
+
+  const root = document.documentElement;
+  const body = document.body;
+  const $ = (selector, scope = document) => scope.querySelector(selector);
+  const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
+  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const mobileQuery = window.matchMedia('(max-width: 720px)');
+
+  const storage = {
+    get(key, fallback = null) {
+      try { return window.localStorage.getItem(key) ?? fallback; } catch { return fallback; }
+    },
+    set(key, value) {
+      try { window.localStorage.setItem(key, value); } catch { /* Storage is optional. */ }
+    }
+  };
+
+  const readHistory = () => {
+    try {
+      const parsed = JSON.parse(storage.get('udit-terminal-history', '[]') || '[]');
+      return Array.isArray(parsed) ? parsed.filter(item => typeof item === 'string').slice(-30) : [];
+    } catch { return []; }
+  };
+
+  const state = {
+    theme: storage.get('udit-theme', 'auto'),
+    terminalHistory: readHistory(),
+    historyIndex: -1,
+    paletteIndex: 0,
+    scrollTicking: false,
+    pointerTicking: false
+  };
+
+  const themeMeta = $('meta[name="theme-color"]');
+  const themeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const resolvedTheme = () => state.theme === 'auto' ? (themeMedia.matches ? 'dark' : 'light') : state.theme;
+
+  const syncThemeButtons = () => {
+    $$('[data-theme-choice]').forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.themeChoice === state.theme));
+    });
+  };
+
+  const applyTheme = (theme, persist = true) => {
+    const nextTheme = ['light', 'dark', 'auto'].includes(theme) ? theme : 'auto';
+    state.theme = nextTheme;
+    const resolved = resolvedTheme();
+    root.dataset.theme = resolved;
+    root.dataset.themeChoice = nextTheme;
+    if (themeMeta) themeMeta.setAttribute('content', resolved === 'dark' ? '#151619' : '#f7f5f1');
+    if (persist) storage.set('udit-theme', nextTheme);
+    syncThemeButtons();
+  };
+
+  applyTheme(state.theme, false);
+  themeMedia.addEventListener?.('change', () => { if (state.theme === 'auto') applyTheme('auto', false); });
+
+  // Sticky header, progress bar, and subtle scroll state.
+  const header = $('.site-header');
+  const progress = $('.scroll-progress span');
+  const updateScrollUI = () => {
+    state.scrollTicking = false;
+    const scrollTop = window.scrollY;
+    header?.classList.toggle('is-scrolled', scrollTop > 24);
+    if (progress) {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.width = `${scrollable > 0 ? Math.min(100, (scrollTop / scrollable) * 100) : 0}%`;
+    }
+  };
+  const requestScrollUI = () => {
+    if (!state.scrollTicking) {
+      state.scrollTicking = true;
+      window.requestAnimationFrame(updateScrollUI);
+    }
+  };
+  window.addEventListener('scroll', requestScrollUI, { passive: true });
+  window.addEventListener('resize', requestScrollUI, { passive: true });
+  updateScrollUI();
+
+  // Mobile navigation has complete dismissal behavior.
+  const nav = $('#primary-nav');
+  const menuButton = $('#menu-button');
+  const closeMenu = () => {
+    nav?.classList.remove('is-open');
+    menuButton?.setAttribute('aria-expanded', 'false');
+  };
+  const toggleMenu = () => {
+    const open = !nav?.classList.contains('is-open');
+    nav?.classList.toggle('is-open', open);
+    menuButton?.setAttribute('aria-expanded', String(open));
+  };
+  menuButton?.addEventListener('click', toggleMenu);
+  $$('.nav-link').forEach(link => link.addEventListener('click', closeMenu));
+  document.addEventListener('click', event => {
+    if (!mobileQuery.matches || !nav?.classList.contains('is-open')) return;
+    if (!nav.contains(event.target) && !menuButton?.contains(event.target)) closeMenu();
+  });
+  window.addEventListener('resize', () => { if (!mobileQuery.matches) closeMenu(); }, { passive: true });
+
+  // Current-section navigation.
+  const sections = $$('[data-section]');
+  const navObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      $$('.nav-link').forEach(link => {
+        link.setAttribute('aria-current', link.getAttribute('href') === `#${entry.target.id}` ? 'page' : 'false');
+      });
+    });
+  }, { rootMargin: '-38% 0px -52% 0px', threshold: 0 }) : null;
+  sections.forEach(section => navObserver?.observe(section));
+
+  // Reveal content only after the browser can observe it; content remains visible without JS.
+  const revealItems = $$('[data-reveal]');
+  if ('IntersectionObserver' in window && !reduceMotionQuery.matches) {
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .12, rootMargin: '0px 0px -5% 0px' });
+    revealItems.forEach(item => revealObserver.observe(item));
+  } else {
+    revealItems.forEach(item => item.classList.add('is-visible'));
+  }
+
+  // Theme menu.
+  const themeControl = $('.theme-control');
+  const themeToggle = $('#theme-toggle');
+  const closeThemeMenu = () => {
+    themeControl?.classList.remove('is-open');
+    themeToggle?.setAttribute('aria-expanded', 'false');
+  };
+  themeToggle?.addEventListener('click', event => {
+    event.stopPropagation();
+    const open = !themeControl?.classList.contains('is-open');
+    themeControl?.classList.toggle('is-open', open);
+    themeToggle.setAttribute('aria-expanded', String(open));
+  });
+  $$('[data-theme-choice]').forEach(button => button.addEventListener('click', () => {
+    applyTheme(button.dataset.themeChoice);
+    closeThemeMenu();
+  }));
+  document.addEventListener('click', event => { if (!themeControl?.contains(event.target)) closeThemeMenu(); });
+
+  // Hero pointer spotlight and restrained parallax.
+  const hero = $('.hero');
+  const heroVisual = $('.hero-visual');
+  const onPointerMove = event => {
+    if (reduceMotionQuery.matches || state.pointerTicking || !hero) return;
+    state.pointerTicking = true;
+    window.requestAnimationFrame(() => {
+      state.pointerTicking = false;
+      const rect = hero.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      hero.style.setProperty('--spot-x', `${x}px`);
+      hero.style.setProperty('--spot-y', `${y}px`);
+      if (heroVisual && window.innerWidth > 900) {
+        heroVisual.style.transform = `translate3d(${(x / rect.width - .5) * 7}px, ${(y / rect.height - .5) * 5}px, 0)`;
+      }
+    });
+  };
+  hero?.addEventListener('pointermove', onPointerMove, { passive: true });
+  hero?.addEventListener('pointerleave', () => { if (heroVisual) heroVisual.style.transform = ''; }, { passive: true });
+
+  // Button magnetism is opt-in and disabled for touch/reduced-motion.
+  if (!reduceMotionQuery.matches && window.matchMedia('(pointer: fine)').matches) {
+    $$('.js-magnetic').forEach(button => {
+      button.addEventListener('pointermove', event => {
+        const rect = button.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width - .5) * 5;
+        const y = ((event.clientY - rect.top) / rect.height - .5) * 4;
+        button.style.setProperty('--mag-x', `${x}px`);
+        button.style.setProperty('--mag-y', `${y}px`);
+      });
+      button.addEventListener('pointerleave', () => {
+        button.style.setProperty('--mag-x', '0px');
+        button.style.setProperty('--mag-y', '0px');
+      });
+    });
+  }
+
+  const currentYear = new Date().getFullYear();
+  $$('[data-current-year]').forEach(element => { element.textContent = currentYear; });
+
+  // Copy email with a graceful fallback and status announcement.
+  const copyEmail = async button => {
+    const email = button.dataset.email;
+    const status = button.closest('.contact-card')?.querySelector('[data-copy-status]');
+    try {
+      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(email);
+      else throw new Error('clipboard unavailable');
+      if (status) status.textContent = 'Copied';
+    } catch {
+      const helper = document.createElement('textarea');
+      helper.value = email;
+      helper.setAttribute('readonly', '');
+      helper.style.position = 'fixed';
+      helper.style.opacity = '0';
+      document.body.append(helper);
+      helper.select();
+      document.execCommand('copy');
+      helper.remove();
+      if (status) status.textContent = 'Copied';
+    }
+    window.setTimeout(() => { if (status) status.textContent = 'Copy'; }, 1800);
+  };
+  $$('[data-copy-email]').forEach(button => button.addEventListener('click', () => copyEmail(button)));
+  const emailHref = 'mailto:udit.kulkarni98@gmail.com?subject=Portfolio%20enquiry';
+  $$('a[href^="mailto:"]').forEach(link => {
+    if (link.matches('a.social-link[aria-label="Email"]')) return;
+    link.setAttribute('href', emailHref);
+    link.addEventListener('click', () => { window.location.href = emailHref; }, { once: true });
+  });
+  const webmailHref = 'https://mail.google.com/mail/?view=cm&fs=1&to=udit.kulkarni98@gmail.com&su=Portfolio%20enquiry';
+  $$('a.social-link[aria-label="Email"]').forEach(link => {
+    link.setAttribute('href', webmailHref);
+    link.setAttribute('target', '_blank');
+    link.setAttribute('rel', 'noreferrer');
+  });
+
+  // Project details are intentionally local and editable: there are no invented links
+  // for private client work, so each card opens an accessible project profile instead.
+  const projectModal = $('#project-modal');
+  const projectModalTitle = $('#project-modal-title');
+  const projectModalSummary = $('#project-modal-summary');
+  const projectModalBody = $('#project-modal-body');
+  const projectModalTags = $('#project-modal-tags');
+  const projectDetails = {
+    'hincol-crm': {
+      title: 'HINCOL CRM Project',
+      summary: 'A comprehensive CRM platform combining modular Laravel engineering with AI-powered business intelligence.',
+      details: [
+        'Architected a modular Laravel backend for complex sales pipelines, customer relationships, opportunities, and financial analytics.',
+        'Developed a Python AI orchestrator with LangChain and Azure OpenAI that converts natural-language questions into precise SQL queries and actionable business insights.',
+        'Designed enterprise APIs with JWT authentication, row-level security, and multi-tenant architecture for secure and scalable data access.',
+        'Implemented AI capabilities for SQL optimization, business analysis, semantic search, financial metric interpretation, and automated diagnostic insights.',
+        'Combined MySQL, Qdrant, Redis, Docker, Laravel, Python, and Azure OpenAI to support production-grade dashboards and intelligent workflows.'
+      ],
+      tags: ['PHP', 'Laravel', 'Python', 'Azure OpenAI', 'Qdrant', 'Redis']
+    },
+    'sales-governance': {
+      title: 'Sales Governance Agent',
+      summary: 'An AI-powered business intelligence service that turns natural-language questions into governed insights, dashboards, and strategic recommendations.',
+      details: [
+        'Developed a FastAPI microservice integrated with LangChain and LangGraph for intelligent query orchestration.',
+        'Implemented text-to-SQL generation for retrieving business and CRM insights from MySQL databases.',
+        'Designed intent-based routing for data queries, dashboards, strategic analysis, diagnostics, explanations, and report exports.',
+        'Integrated Qdrant vector search for semantic schema discovery, entity matching, and database relationship identification.',
+        'Added secure SQL execution with read-only validation, sensitive-column protection, scope checks, and automatic error correction.',
+        'Enforced role-, organization-, and zone-based access using authenticated user context supplied by the Laravel backend.',
+        'Implemented conversational memory and follow-up query handling with Redis and LangGraph checkpoints.',
+        'Enabled real-time response streaming through Server-Sent Events and background processing for long-running queries.',
+        'Developed executive dashboards, KPI summaries, charts, business insights, and strategic recommendations.',
+        'Added report exports in CSV, Excel, and Word formats.',
+        'Implemented query logging, LangSmith tracing, token and cost tracking, health monitoring, and schema/entity re-indexing.',
+        'Built the service with Python, FastAPI, LangChain, LangGraph, Azure OpenAI, MySQL, SQLAlchemy, Qdrant, Redis, Pandas, and Docker.'
+      ],
+      tags: ['Python', 'FastAPI', 'LangChain', 'LangGraph', 'Azure OpenAI', 'MySQL', 'SQLAlchemy', 'Qdrant', 'Redis', 'Pandas', 'Docker']
+    },
+    'disney-plus': {
+      title: 'Disney+ Hotstar',
+      summary: 'Frontend delivery and project coordination for the Disney+ Hotstar portfolio across international client programs.',
+      details: [
+        'Contributed to frontend development and project management for the Disney+ Hotstar portfolio.',
+        'Coordinated email campaigns for four international clients across the United States, the United Kingdom, and MENA markets.',
+        'Built practical experience in client interaction, stakeholder communication, and delivery coordination across distributed teams.'
+      ],
+      tags: ['PHP', 'Laravel', 'Drupal', 'REST APIs', 'Docker']
+    },
+    citroen: {
+      title: 'Citroën',
+      summary: 'A Drupal and PHP platform for Citroën India, with dealer operations, lead generation, and high-performance integrations.',
+      details: [
+        'Led backend development for Citroën India using Drupal and PHP, including more than twelve custom REST API modules.',
+        'Developed a Dealer Locator API by combining PSA dealer data with internal network points to support accurate searches across more than 1000 dealer locations.',
+        'Implemented geolocation, custom logging, JSON transformation, and performance optimizations for the Dealer Locator system.',
+        'Collaborated in a three-member team to deliver the limited-edition Team Dhoni Microsite, receiving appreciation from the project manager.',
+        'Integrated RESTful APIs, caching, and media-asset optimizations, improving page-load speed by 25 percent.',
+        'Managed dealer information through the CMS while integrating Salesforce CRM, OTP verification, and WhatsApp messaging for customer engagement.'
+      ],
+      tags: ['PHP', 'Symfony', 'Drupal', 'OpenID', 'OAuth', 'Salesforce CRM']
+    },
+    'hinduja-ai': {
+      title: 'Hinduja Hospital AI Assistant',
+      summary: 'An AI-powered healthcare assistant built for grounded hospital information, live service workflows, and reliable patient support.',
+      details: [
+        'Built an AI healthcare assistant using FastAPI, LangChain, Azure OpenAI, Qdrant, and grounded retrieval workflows.',
+        'Implemented document ingestion for PDF, CSV, DOCX, TXT, XLSX, and JSON files.',
+        'Developed hybrid search using dense embeddings, BM25 sparse retrieval, and cross-encoder reranking for relevant responses.',
+        'Generated citation-based answers with document and page references to improve reliability and traceability.',
+        'Added session memory for contextual follow-up questions and real-time response streaming through Server-Sent Events.',
+        'Integrated hospital APIs for doctor search, departments, consultation slots, charges, and patient details.',
+        'Enabled appointment booking, cancellation, rescheduling, and notification workflows through email and WhatsApp.',
+        'Developed an authenticated admin panel for document upload, preview, reindexing, deletion, and vector-database monitoring.',
+        'Added SQLite and FTS5 search for doctor profiles, specialties, health packages, and hospital information.',
+        'Containerized the application with Docker Compose for repeatable deployment and easier scaling.'
+      ],
+      tags: ['Python', 'FastAPI', 'LangChain', 'Azure OpenAI', 'Qdrant', 'SQLite', 'Docker']
+    }
+  };
+  let projectModalReturnFocus = null;
+  const openProjectModal = projectId => {
+    const project = projectDetails[projectId];
+    if (!project || !projectModal) return;
+    projectModalReturnFocus = document.activeElement;
+    if (projectModalTitle) projectModalTitle.textContent = project.title;
+    if (projectModalSummary) projectModalSummary.textContent = project.summary;
+    if (projectModalBody) {
+      const list = document.createElement('ul');
+      list.className = 'project-detail-list';
+      list.replaceChildren(...project.details.map(detail => {
+        const item = document.createElement('li');
+        item.textContent = detail;
+        return item;
+      }));
+      projectModalBody.replaceChildren(list);
+    }
+    if (projectModalTags) {
+      projectModalTags.replaceChildren(...project.tags.map(tag => {
+        const element = document.createElement('span');
+        element.className = 'tag';
+        element.textContent = tag;
+        return element;
+      }));
+    }
+    if (!projectModal.open) projectModal.showModal();
+  };
+  $$('[data-project-open]').forEach(button => button.addEventListener('click', event => {
+    event.stopPropagation();
+    openProjectModal(button.dataset.projectOpen);
+  }));
+  $$('.project-card').forEach(card => card.addEventListener('click', event => {
+    if (event.target.closest('button, a')) return;
+    openProjectModal(card.querySelector('[data-project-open]')?.dataset.projectOpen);
+  }));
+  $$('[data-modal-close]').forEach(button => button.addEventListener('click', () => projectModal?.close()));
+  projectModal?.addEventListener('click', event => {
+    if (event.target === projectModal) projectModal.close();
+  });
+  projectModal?.addEventListener('close', () => {
+    projectModalReturnFocus?.focus?.({ preventScroll: true });
+    projectModalReturnFocus = null;
+  });
+
+  // Terminal command engine.
+  const terminalOutput = $('#console-output');
+  const terminalInput = $('#console-input');
+  const terminalStatus = $('#console-status');
+  const terminalPrefix = 'php artisan';
+  const terminalCommands = ['help', 'about', 'skills', 'projects', 'experience', 'contact', 'resume', 'github', 'linkedin', 'email', 'clear', 'theme', 'history'];
+  const fullCommand = command => `${terminalPrefix} ${command}`;
+  const commandDescriptions = {
+    help: 'Show available commands', about: 'Read the professional summary', skills: 'Explore technical focus areas', projects: 'See selected systems and platforms', experience: 'View work history and education', contact: 'Show contact details', resume: 'Open the PDF resume', github: 'Open GitHub profile', linkedin: 'Open LinkedIn profile', email: 'Compose an email', clear: 'Clear terminal output', theme: 'Change light, dark, or auto theme', history: 'Show command history'
+  };
+  state.terminalHistory = state.terminalHistory.map(command => {
+    const normalized = command.trim().toLowerCase().replace(/\s+/g, ' ');
+    return normalized.startsWith(`${terminalPrefix} `) ? normalized : fullCommand(normalized);
+  }).filter(command => terminalCommands.includes(command.slice(terminalPrefix.length + 1)));
+  storage.set('udit-terminal-history', JSON.stringify(state.terminalHistory));
+  const escapeHTML = value => String(value).replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
+  const writeTerminal = (content, type = '') => {
+    if (!terminalOutput) return;
+    const line = document.createElement('div');
+    line.className = `terminal-result${type ? ` terminal-result--${type}` : ''}`;
+    line.innerHTML = content;
+    terminalOutput.append(line);
+    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+  };
+
+  const bootTyping = () => {
+    const typingTarget = $('[data-typing]');
+    if (!typingTarget || reduceMotionQuery.matches) return;
+    const text = typingTarget.dataset.typing || typingTarget.textContent;
+    typingTarget.textContent = '';
+    let index = 0;
+    const interval = window.setInterval(() => {
+      typingTarget.textContent += text[index++];
+      if (index >= text.length) window.clearInterval(interval);
+    }, 35);
+  };
+  window.setTimeout(bootTyping, 520);
+  const setTerminalStatus = message => { if (terminalStatus) terminalStatus.textContent = message; };
+  const runCommand = rawInput => {
+    const normalizedInput = rawInput.trim().toLowerCase().replace(/\s+/g, ' ');
+    if (!normalizedInput) return;
+    const command = normalizedInput.startsWith(`${terminalPrefix} `) ? normalizedInput.slice(terminalPrefix.length + 1) : '';
+    if (command && command !== 'clear' && terminalCommands.includes(command)) {
+      state.terminalHistory = [...state.terminalHistory.filter(item => item !== normalizedInput), normalizedInput].slice(-30);
+      storage.set('udit-terminal-history', JSON.stringify(state.terminalHistory));
+    }
+    state.historyIndex = state.terminalHistory.length;
+    writeTerminal(`<span class="terminal-prompt">udit@portfolio:~$</span> ${escapeHTML(rawInput)}`, 'command');
+    setTerminalStatus('');
+
+    if (!command) {
+      writeTerminal(`Use <span class="terminal-green">${terminalPrefix} &lt;command&gt;</span>. Type <span class="terminal-green">${fullCommand('help')}</span> to see the list.`, 'error');
+      return;
+    }
+    if (!terminalCommands.includes(command)) {
+      writeTerminal(`Unknown command: ${escapeHTML(command)}. Type <span class="terminal-green">${fullCommand('help')}</span> for the command list.`, 'error');
+      return;
+    }
+
+    switch (command) {
+      case 'help':
+        writeTerminal(`<span class="terminal-green">Available commands:</span><div class="terminal-command-list">${terminalCommands.map(item => `<span class="terminal-help-row"><code>${fullCommand(item)}</code><span>${commandDescriptions[item]}</span></span>`).join('')}</div>`);
+        break;
+      case 'about':
+        writeTerminal('Senior Software Engineer & Team Lead specializing in PHP 8.x, Laravel, Symfony, Drupal, and reliable product engineering.');
+        break;
+      case 'skills':
+        writeTerminal('PHP 8.x · Laravel · Symfony · Drupal · Python · MySQL · Redis · Docker · AWS S3 · PHPUnit');
+        break;
+      case 'projects':
+        writeTerminal('HINCOL CRM · Sales Governance Agent · Citroën · Hinduja Hospital AI Assistant · Disney+ Hotstar');
+        break;
+      case 'experience':
+        writeTerminal('Publicis Digital Experience (PDX) — Jan 2025 to Present · Razorfish — Jan 2023 to Dec 2024 · Publicis Media — Jan 2022 to Jul 2022');
+        break;
+      case 'contact':
+        writeTerminal('Mumbai, India · <a class="terminal-link" href="mailto:udit.kulkarni98@gmail.com">udit.kulkarni98@gmail.com</a> · 9892955429');
+        break;
+      case 'resume':
+        writeTerminal('Opening <a class="terminal-link" href="./Udit-Kulkarni_Resume.pdf" target="_blank" rel="noreferrer">resume PDF</a>…');
+        window.open('./Udit-Kulkarni_Resume.pdf', '_blank', 'noopener,noreferrer');
+        break;
+      case 'github':
+        writeTerminal('Opening <a class="terminal-link" href="https://github.com/udit-kulkarni98" target="_blank" rel="noreferrer">github.com/udit-kulkarni98</a>…');
+        break;
+      case 'linkedin':
+        writeTerminal('Opening <a class="terminal-link" href="https://linkedin.com/in/udit-kulkarni" target="_blank" rel="noreferrer">linkedin.com/in/udit-kulkarni</a>…');
+        break;
+      case 'email':
+        window.location.href = emailHref;
+        writeTerminal('Opening your mail client…');
+        break;
+      case 'clear':
+        if (terminalOutput) terminalOutput.replaceChildren();
+        break;
+      case 'theme': {
+        applyTheme(state.theme === 'light' ? 'dark' : state.theme === 'dark' ? 'auto' : 'light');
+        writeTerminal(`Theme set to <span class="terminal-green">${state.theme}</span>.`);
+        break;
+      }
+      case 'history':
+        writeTerminal(state.terminalHistory.length ? state.terminalHistory.map((item, index) => `${index + 1}  ${escapeHTML(item)}`).join('<br>') : 'No commands yet.');
+        break;
+      default:
+        break;
+    }
+  };
+  terminalInput?.addEventListener('keydown', event => {
+    if (event.key === 'Enter') { runCommand(terminalInput.value); terminalInput.value = ''; }
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (!state.terminalHistory.length) return;
+      state.historyIndex = Math.max(0, state.historyIndex - 1);
+      terminalInput.value = state.terminalHistory[state.historyIndex] || '';
+    }
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      state.historyIndex = Math.min(state.terminalHistory.length, state.historyIndex + 1);
+      terminalInput.value = state.terminalHistory[state.historyIndex] || '';
+    }
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      const value = terminalInput.value.trim().toLowerCase().replace(/\s+/g, ' ');
+      const matches = terminalCommands.map(fullCommand).filter(command => command.startsWith(value));
+      if (matches.length === 1) terminalInput.value = matches[0];
+      else if (matches.length > 1) setTerminalStatus(matches.join('  ·  '));
+    }
+  });
+  $$('[data-command]').forEach(button => button.addEventListener('click', () => { terminalInput?.focus(); runCommand(button.dataset.command); }));
+
+  // Command palette, opened by Ctrl/Cmd + K.
+  const paletteBackdrop = $('#command-palette');
+  const paletteInput = $('#palette-input');
+  const paletteList = $('#palette-list');
+  let paletteReturnFocus = null;
+  const closePalette = () => {
+    paletteBackdrop?.classList.remove('is-open');
+    paletteBackdrop?.setAttribute('aria-hidden', 'true');
+    (paletteReturnFocus || $('#palette-button'))?.focus({ preventScroll: true });
+    paletteReturnFocus = null;
+  };
+  const renderPalette = query => {
+    if (!paletteList) return;
+    const filtered = terminalCommands.filter(command => `${fullCommand(command)} ${commandDescriptions[command]}`.toLowerCase().includes(query.toLowerCase()));
+    state.paletteIndex = Math.min(state.paletteIndex, Math.max(0, filtered.length - 1));
+    paletteList.replaceChildren(...filtered.map((command, index) => {
+      const button = document.createElement('button');
+      button.className = 'palette-item';
+      button.type = 'button';
+      button.dataset.command = fullCommand(command);
+      button.setAttribute('role', 'option');
+      button.setAttribute('aria-selected', String(index === state.paletteIndex));
+      button.innerHTML = `<code>${fullCommand(command)}</code><small>${commandDescriptions[command]}</small>`;
+      button.addEventListener('click', () => { closePalette(); terminalInput?.focus(); runCommand(fullCommand(command)); });
+      return button;
+    }));
+  };
+  const openPalette = () => {
+    if (!paletteBackdrop) return;
+    paletteReturnFocus = document.activeElement;
+    paletteBackdrop.classList.add('is-open');
+    paletteBackdrop.setAttribute('aria-hidden', 'false');
+    state.paletteIndex = 0;
+    renderPalette('');
+    window.setTimeout(() => paletteInput?.focus(), 20);
+  };
+  $('#palette-button')?.addEventListener('click', openPalette);
+  paletteInput?.addEventListener('input', () => { state.paletteIndex = 0; renderPalette(paletteInput.value); });
+  paletteInput?.addEventListener('keydown', event => {
+    const items = $$('.palette-item', paletteList);
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (!items.length) return;
+      state.paletteIndex = (state.paletteIndex + (event.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+      items.forEach((item, index) => item.setAttribute('aria-selected', String(index === state.paletteIndex)));
+    }
+    if (event.key === 'Enter') items[state.paletteIndex]?.click();
+  });
+  paletteBackdrop?.addEventListener('keydown', event => {
+    if (event.key !== 'Tab') return;
+    const focusable = [paletteInput, ...$$('.palette-item', paletteList)].filter(Boolean);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
+  paletteBackdrop?.addEventListener('click', event => { if (event.target === paletteBackdrop) closePalette(); });
+
+  document.addEventListener('keydown', event => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); openPalette(); }
+    if (event.key === 'Escape') { closeMenu(); closeThemeMenu(); closePalette(); }
+  });
+
+  // Remove the loader after the first paint. The page stays usable if JS is slow or unavailable.
+  window.addEventListener('load', () => window.setTimeout(() => $('.page-loader')?.remove(), reduceMotionQuery.matches ? 0 : 650), { once: true });
+})();

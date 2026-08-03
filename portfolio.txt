@@ -1,0 +1,50 @@
+Hincol CRM
+Architecting and developing HINCOL, a comprehensive CRM Platform combining advanced capabilities with AI-powered business intelligence.
+
+🔹 Building a modular Laravel backend to manage complex sales pipelines, customer relationships, opportunities, and financial analytics.
+
+🔹 Developing an intelligent Python-based AI orchestrator using LangChain and Azure OpenAI, enabling natural-language queries to be converted into precise SQL and actionable business insights.
+
+🔹 Designing enterprise-grade APIs with JWT authentication, row-level security, and multi-tenant architecture for secure and scalable data access.
+
+🔹 Implementing AI-driven capabilities for SQL optimization, business analysis, semantic search, financial metric interpretation, and automated diagnostic insights.
+
+🔹 Leveraging MySQL, Qdrant, Redis, Docker, Laravel, Python, and Azure OpenAI to build scalable, production-grade AI solutions and dynamic business dashboards.
+
+🔹 Built an enterprise-scale digital platform for Citroën India using Drupal, including 12+ custom REST API modules for lead generation, customer reviews, dealer locator, and real-time session management.
+
+🔹 Integrated Salesforce CRM, OTP verification, and WhatsApp messaging to automate customer engagement and lead-management workflows.
+
+🔹 Deployed containerized applications through Docker and AWS pipelines, utilizing Redis caching and S3 storage for performance and scalability.
+
+🔹 Experienced in full-stack PHP/Laravel/Drupal development, headless CMS architecture, REST APIs, AI integration, and enterprise microservices.
+
+Citroen
+🔹 Leading backend development for Citroën India, specializing in Drupal and PHP development.
+
+🔹 Developed a robust Dealer Locator REST API by integrating PSA dealer data with internal network points, supporting accurate location-based searches across 1000+ dealer locations.
+
+🔹 Implemented geolocation capabilities, custom logging, JSON data transformation, and performance optimizations for the Dealer Locator system.
+
+🔹 Collaborated in a 3-member team to successfully deliver the limited-edition Team Dhoni Microsite, receiving appreciation from the project manager.
+
+🔹 Developed and integrated RESTful APIs while implementing caching and media asset optimizations, improving page load speed by 25%.
+
+🔹 Managing 70+ dealers through the CMS, ensuring accurate and efficient dealer information management.
+
+Disney+ Hotstar
+🔹 Contributed to frontend development and project management for handling the Disney+ Hotstar portfolio for the company. It involved sending emailers to 4 international clients from US, UK , MENA countries. Gained experience in client interaction and client handling.
+
+Hinduja
+Built an AI-powered healthcare chatbot for Hinduja Hospital using FastAPI, LangChain, Azure/OpenAI, and Qdrant.
+Implemented document ingestion for PDF, CSV, DOCX, TXT, XLSX, and JSON files.
+Developed hybrid semantic and keyword search using dense embeddings, BM25 sparse retrieval, and cross-encoder reranking.
+Generated citation-based responses with document and page references to improve answer reliability.
+Added session memory for contextual follow-up questions.
+Integrated live hospital APIs for doctor search, departments, consultation slots, charges, and patient details.
+Enabled appointment booking, cancellation, rescheduling, and booking notifications through email and WhatsApp.
+Developed an authenticated admin panel for document upload, preview, reindexing, deletion, and vector database monitoring.
+Added structured SQLite/FTS5 search for doctor profiles, specialties, health packages, and hospital information.
+Implemented real-time response streaming using Server-Sent Events (SSE).
+Containerized the application with Docker Compose for easier deployment and scaling.
+Tech Stack: Python, FastAPI, LangChain, Azure OpenAI, Qdrant, SQLite, FTS5, Sentence Transformers, Docker, JavaScript, HTML, CSS.
