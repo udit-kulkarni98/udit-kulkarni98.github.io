@@ -255,7 +255,11 @@
   const viewCounterKey = 'udit-portfolio-view-counted-v1';
   const viewCounterIncrementEndpoint = 'https://api.counterapi.dev/v1/udit-kulkarni98-portfolio/unique-views/up';
   const viewCounterGetEndpoint = 'https://api.counterapi.dev/v1/udit-kulkarni98-portfolio/unique-views/';
-  const viewCounterResetEndpoint = 'https://api.counterapi.dev/v1/udit-kulkarni98-portfolio/unique-views/set?count=0';
+  const viewCounterResetEndpoints = [
+    'https://api.counterapi.dev/v1/udit-kulkarni98-portfolio/unique-views/set?count=0',
+    'https://api.counterapi.dev/v1/udit-kulkarni98-portfolio/unique-views/?count=0'
+  ];
+  const counterValueFromPayload = payload => Number(payload?.data?.value ?? payload?.data?.count ?? payload?.data ?? payload?.value ?? payload?.count);
   const canPersistView = (() => {
     try {
       const testKey = 'udit-portfolio-storage-test';
@@ -272,7 +276,7 @@
       const response = await fetch(endpoint, { headers: { Accept: 'application/json' }, cache: 'no-store', credentials: 'omit' });
       if (!response.ok) throw new Error(`Counter request failed: ${response.status}`);
       const payload = await response.json();
-      const count = Number(payload?.data?.value ?? payload?.data?.count ?? payload?.value ?? payload?.count);
+      const count = counterValueFromPayload(payload);
       if (!Number.isFinite(count)) throw new Error('Invalid counter response');
       if (canPersistView && !alreadyCounted) storage.set(viewCounterKey, 'true');
       pageViews.textContent = new Intl.NumberFormat('en-IN').format(count);
@@ -604,10 +608,19 @@
     }
     writeTerminal('Resetting unique profile views…');
     try {
-      const response = await fetch(viewCounterResetEndpoint, { headers: { Accept: 'application/json' }, cache: 'no-store', credentials: 'omit' });
-      if (!response.ok) throw new Error(`Counter reset failed: ${response.status}`);
+      let response = null;
+      for (const endpoint of viewCounterResetEndpoints) {
+        try {
+          const candidate = await fetch(endpoint, { headers: { Accept: 'application/json' }, cache: 'no-store', credentials: 'omit' });
+          if (candidate.ok) {
+            response = candidate;
+            break;
+          }
+        } catch { /* Try the documented legacy form next. */ }
+      }
+      if (!response) throw new Error('Counter reset request failed');
       const payload = await response.json();
-      const count = Number(payload?.data?.value ?? payload?.data?.count ?? payload?.value ?? payload?.count);
+      const count = counterValueFromPayload(payload);
       if (!Number.isFinite(count)) throw new Error('Invalid counter response');
       storage.remove(viewCounterKey);
       const formattedCount = new Intl.NumberFormat('en-IN').format(count);
