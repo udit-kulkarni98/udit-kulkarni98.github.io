@@ -319,16 +319,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
 
 /* Experience */
 .experience { padding: var(--space-7) 0 112px; background: var(--paper-raised); }
-.timeline { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 32px; margin: 68px 0 76px; }
-.timeline::before { position: absolute; top: 25px; right: 28px; left: 28px; height: 1px; background: color-mix(in srgb, var(--line-strong) 75%, transparent); content: ""; }
-.timeline-item { position: relative; min-width: 0; }
-.timeline-icon { position: relative; z-index: 1; display: grid; place-items: center; width: 50px; height: 50px; margin-bottom: 22px; border: 1px solid var(--line); border-radius: 50%; color: var(--muted); background: var(--paper-raised); box-shadow: 0 0 0 7px var(--paper-raised); font: 17px var(--serif); transition: color var(--duration-ui) ease, border-color var(--duration-ui) ease, transform var(--duration-ui) var(--ease-premium), box-shadow var(--duration-ui) ease; }
-.timeline-item:hover .timeline-icon { color: var(--red); border-color: color-mix(in srgb, var(--red) 52%, var(--line)); transform: translateY(-3px); box-shadow: 0 0 0 7px var(--paper-raised), 0 8px 20px color-mix(in srgb, var(--red) 14%, transparent); }
-.timeline-item:nth-child(2) .timeline-icon, .timeline-item:nth-child(4) .timeline-icon { color: var(--red); border-color: color-mix(in srgb, var(--red) 32%, var(--line)); }
-.timeline-year { color: var(--muted); font: 10px var(--mono); }
-.timeline-title { display: block; margin: 10px 0 7px; font-size: 12px; font-weight: 750; line-height: 1.35; }
-.timeline-copy { max-width: 180px; margin: 0; color: var(--muted); font-size: 10px; line-height: 1.65; }
-.experience-grid { display: grid; grid-template-columns: minmax(0, 980px); row-gap: 0; justify-content: center; margin-bottom: 72px; perspective: 1500px; perspective-origin: 50% 0; }
+.experience-grid { display: grid; grid-template-columns: minmax(0, 980px); row-gap: 0; justify-content: center; margin-top: 64px; margin-bottom: 72px; perspective: 1500px; perspective-origin: 50% 0; }
 .experience-unfold-trigger { display: block; height: 20px; margin: -1px 14px 0; border: 1px solid color-mix(in srgb, var(--line-strong) 72%, transparent); border-top: 0; border-radius: 0 0 12px 12px; background: color-mix(in srgb, var(--paper-raised) 88%, var(--ink)); box-shadow: 0 8px 16px color-mix(in srgb, var(--ink) 9%, transparent); opacity: .46; pointer-events: none; transform-origin: top center; transition: opacity 480ms ease, transform 720ms var(--ease-premium); }
 .experience-unfold-trigger.is-open { opacity: .8; transform: translateY(1px) scaleY(.82); }
 .experience-card { position: relative; overflow: visible; padding: 25px 23px 23px; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--paper-raised); box-shadow: var(--shadow-sm); transform-style: preserve-3d; transition: border-color var(--duration-ui) ease, box-shadow var(--duration-ui) var(--ease-premium), transform var(--duration-ui) var(--ease-premium); }
@@ -464,13 +455,6 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
   .project-card:last-child { grid-column: auto; max-width: none; margin-inline: 0; }
   .stack-categories { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .skills-grid { gap: 48px; }
-  .timeline { grid-template-columns: 1fr; gap: 25px; margin: 56px 0 64px 7px; }
-  .timeline::before { top: 25px; bottom: 25px; left: 25px; right: auto; width: 1px; height: auto; }
-  .timeline-item { display: grid; grid-template-columns: 50px minmax(0, 1fr); column-gap: 18px; align-items: center; }
-  .timeline-icon { grid-row: span 3; margin: 0; }
-  .timeline-year, .timeline-title, .timeline-copy { grid-column: 2; }
-  .timeline-title { margin: 6px 0 4px; }
-  .timeline-copy { max-width: 420px; }
 }
 
 @media (max-width: 720px) {
@@ -513,7 +497,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
   .proof { padding: 72px 0 82px; }
   .section-intro { max-width: 430px; text-align: left; }
   .proof-grid { grid-template-columns: 1fr; gap: 32px; }
-  .experience-grid { grid-template-columns: 1fr; row-gap: 0; margin-bottom: 56px; }
+  .experience-grid { grid-template-columns: 1fr; row-gap: 0; margin-top: 48px; margin-bottom: 56px; }
   .experience-card:first-child { grid-column: auto; }
   .experience-grid { perspective: 1100px; }
   .experience-unfold-trigger { height: 16px; margin-inline: 10px; }
