@@ -356,16 +356,61 @@
   const projectModalTags = $('#project-modal-tags');
   const projectDetails = {
     'hincol-crm': {
-      title: 'HINCOL CRM Project',
-      summary: 'A comprehensive CRM platform combining modular Laravel engineering with AI-powered business intelligence.',
-      details: [
-        'Architected a modular Laravel backend for complex sales pipelines, customer relationships, opportunities, and financial analytics.',
-        'Developed a Python AI orchestrator with LangChain and Azure OpenAI that converts natural-language questions into precise SQL queries and actionable business insights.',
-        'Designed enterprise APIs with JWT authentication, row-level security, and multi-tenant architecture for secure and scalable data access.',
-        'Implemented AI capabilities for SQL optimization, business analysis, semantic search, financial metric interpretation, and automated diagnostic insights.',
-        'Combined MySQL, Qdrant, Redis, Docker, Laravel, Python, and Azure OpenAI to support production-grade dashboards and intelligent workflows.'
+      title: 'HINCOL – Enterprise Sales & Operations Platform',
+      summary: 'An enterprise sales and operations platform built with Laravel to connect CRM, commercial governance, projects, orders, SAP workflows, and business analytics in one modular system.',
+      sections: [
+        {
+          title: 'Platform architecture',
+          details: [
+            'Developed a modular Laravel-based enterprise platform for managing sales, customers, projects, quotations, orders, operations, and business analytics.',
+            'Built a scalable modular-monolith architecture with 77+ business modules, service layers, repositories, jobs, events, listeners, and API resources.',
+            'Implemented RESTful APIs using Laravel 11, PHP 8.2, MySQL, JWT authentication, and organization-based access control.',
+            'Created user, role, permission, designation, user-group, zone, organization, and module-level access management.'
+          ]
+        },
+        {
+          title: 'CRM and commercial workflows',
+          details: [
+            'Developed lead and CRM management covering companies, contacts, stakeholders, customer profiles, addresses, financial information, credit ratings, and ownership structures.',
+            'Implemented opportunity management with assignments, opportunity sharing, transfers, packages, proposals, customer mapping, and lifecycle tracking.',
+            'Built project management features including project packages, consultants, contract types, segments, estimations, quotations, project status, and similar-project tracking.',
+            'Developed the complete RFQ and quotation lifecycle, including multi-product quotations, services, discounts, revisions, approvals, customer responses, PDF proposals, and audit history.',
+            'Implemented product sample and customization workflows with QC and technical-team coordination.',
+            'Built indent order management with RFQ-based order creation, bulk orders, automatic discount calculations, approvals, document uploads, delivery tracking, and order status management.'
+          ]
+        },
+        {
+          title: 'ERP, operations, and costing',
+          details: [
+            'Integrated SAP APIs for customers, products, pricing, plants, inventory, production capacity, sales orders, invoices, returns, billing and shipping addresses, bank guarantees, and statements of accounts.',
+            'Developed plant, depot, distributor, COD, stock-transfer, inventory, commission, and product-return workflows with multi-level approvals.',
+            'Implemented location-based costing to compare plant pricing, shipping rates, distance, product category, and delivery location to identify cost-efficient plants.',
+            'Created service quotation and project execution modules for microsurfacing, chip seal, DASH, machinery, labour, materials, risk metrics, and execution costing.'
+          ]
+        },
+        {
+          title: 'Business intelligence and governance',
+          details: [
+            'Built management, finance, BDM, RBH, and sales-engineer dashboards covering sales trends, revenue, margins, pipeline, conversion rates, AOP, receivables, customer retention, performance, and sales velocity.',
+            'Developed account planning and KAM features including account history, customer segmentation, account potential, SWOT analysis, key success matrices, goals, revenue segmentation, KAM classification, upgrade requests, and movement reports.',
+            'Implemented customer experience features such as complaints, escalations, issue-resolution tracking, ratings, reviews, testimonials, NPS surveys, and feedback reporting.',
+            'Built meeting and seminar management with scheduling, approvals, follow-up reminders, calendar integration, meeting history, status tracking, and photo uploads.',
+            'Implemented incident and risk management with incident types, classifications, likelihood, consequences, risk calculations, statuses, supervisor responses, and escalation workflows.',
+            'Developed commercial governance modules for discount rules, discount leakage, tax/GST, payment terms, payment modes, bank details, financial performance, spend analysis, and risk alerts.',
+            'Created cross-selling and market intelligence capabilities covering customer/product mapping, product matrices, competitor products, plants, news, engagement, market performance, and potential reports.',
+            'Added sales enablement modules for news, FAQs, knowledge resources, documents, videos, tags, microsites, banners, and sales briefcase content.'
+          ]
+        },
+        {
+          title: 'Automation, integrations, and reliability',
+          details: [
+            'Automated recurring business processes such as opportunity assignment, RFQ expiry, order synchronization, complaint escalation, meeting reminders, bank-guarantee expiry checks, drop alerts, data imports, exports, and report generation.',
+            'Integrated email, SMS, WhatsApp, in-app notifications, OTP verification, Microsoft SSO, Outlook Calendar, AWS S3 storage, Redis queues, Excel imports and exports, PDF generation, and Swagger/OpenAPI documentation.',
+            'Added API logging, session tracking, SAP request logging, data encryption utilities, zone-level filtering, organization isolation, audit trails, scheduled jobs, and Docker-based development support.'
+          ]
+        }
       ],
-      tags: ['PHP', 'Laravel', 'Python', 'Azure OpenAI', 'Qdrant', 'Redis']
+      tags: ['Laravel 11', 'PHP 8.2', 'MySQL', 'JWT', 'REST APIs', 'SAP APIs', 'Redis', 'Docker', 'AWS S3', 'Swagger/OpenAPI']
     },
     'sales-governance': {
       title: 'Sales Governance Agent',
@@ -435,21 +480,38 @@
     if (projectModalTitle) projectModalTitle.textContent = project.title;
     if (projectModalSummary) projectModalSummary.textContent = project.summary;
     if (projectModalBody) {
-      const list = document.createElement('ul');
-      list.className = 'project-detail-list';
-      list.replaceChildren(...project.details.map(detail => {
-        const item = document.createElement('li');
-        item.textContent = detail;
-        return item;
-      }));
-      projectModalBody.replaceChildren(list);
+      const createList = details => {
+        const list = document.createElement('ul');
+        list.className = 'project-detail-list';
+        list.replaceChildren(...details.map(detail => {
+          const item = document.createElement('li');
+          item.textContent = detail;
+          return item;
+        }));
+        return list;
+      };
+      const content = document.createDocumentFragment();
+      if (project.sections) {
+        project.sections.forEach(section => {
+          const sectionElement = document.createElement('div');
+          sectionElement.className = 'project-detail-section';
+          const heading = document.createElement('h3');
+          heading.className = 'project-detail-heading';
+          heading.textContent = section.title;
+          sectionElement.append(heading, createList(section.details));
+          content.append(sectionElement);
+        });
+      } else {
+        content.append(createList(project.details));
+      }
+      projectModalBody.replaceChildren(content);
     }
     if (projectModalTags) {
       projectModalTags.replaceChildren(...project.tags.map(tag => {
-        const element = document.createElement('span');
-        element.className = 'tag';
-        element.textContent = tag;
-        return element;
+        const item = document.createElement('span');
+        item.className = 'tag';
+        item.textContent = tag;
+        return item;
       }));
     }
     if (!projectModal.open) projectModal.showModal();
