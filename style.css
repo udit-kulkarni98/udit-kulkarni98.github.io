@@ -266,11 +266,6 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
 .skills-note { max-width: 760px; margin: 26px 0 0; color: #929197; font-size: 11px; line-height: 1.7; }
 .dark-link { display: inline-flex; align-items: center; gap: 10px; margin-top: 24px; color: #e85c5b; font: 11px var(--mono); }
 .dark-link:hover { color: #fff; }
-.dark-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding-top: 32px; border-top: 1px solid var(--dark-line); }
-.dark-stat { padding: 17px 16px; border: 1px solid var(--dark-line); border-radius: var(--radius-sm); transition: border-color var(--duration-ui) ease, background-color var(--duration-ui) ease, transform var(--duration-ui) var(--ease-premium); }
-.dark-stat:hover { border-color: color-mix(in srgb, var(--red) 40%, var(--dark-line)); background: rgba(255,255,255,.035); transform: translateY(-3px); }
-.dark-stat strong { display: block; color: #f2efe9; font: 400 clamp(27px, 3vw, 39px)/1 var(--serif); letter-spacing: -.07em; }
-.dark-stat span { display: block; margin-top: 8px; color: #85858a; font: 10px/1.4 var(--mono); }
 
 /* Professional proof */
 .proof { padding: var(--space-7) 0 104px; background: var(--paper); }
@@ -487,7 +482,6 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
   .skills { padding: 72px 0 82px; }
   .skills-grid { grid-template-columns: 1fr; gap: 52px; }
   .stack-categories { grid-template-columns: 1fr; }
-  .dark-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 34px 0 0; border-top: 1px solid var(--dark-line); border-left: 0; }
   .skill-category { display: block; }
   .skill-category-title { padding-top: 0; }
   .proof { padding: 72px 0 82px; }
