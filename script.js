@@ -362,6 +362,13 @@
     'hincol-crm': {
       title: 'HINCOL – Enterprise Sales & Operations Platform',
       summary: 'An enterprise sales and operations platform built with Laravel to connect CRM, commercial governance, projects, orders, SAP workflows, and business analytics in one modular system.',
+      award: {
+        name: 'Wow@Work',
+        title: 'Collective Impact Award',
+        description: 'Recognized for the successful delivery of the Hindustan Colas (HINCOL) project.',
+        image: './assets/wow@work.png',
+        alt: 'Wow@Work Collective Impact Award for successful delivery of the Hindustan Colas HINCOL project'
+      },
       sections: [
         {
           title: 'Platform architecture',
@@ -507,6 +514,34 @@
         });
       } else {
         content.append(createList(project.details));
+      }
+      if (project.award) {
+        const award = document.createElement('figure');
+        award.className = 'project-award';
+        const media = document.createElement('div');
+        media.className = 'project-award-media';
+        const image = document.createElement('img');
+        image.src = project.award.image;
+        image.alt = project.award.alt;
+        image.width = 1384;
+        image.height = 1086;
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        media.append(image);
+        const caption = document.createElement('figcaption');
+        caption.className = 'project-award-caption';
+        const label = document.createElement('span');
+        label.className = 'project-award-label';
+        label.textContent = 'Recognition';
+        const title = document.createElement('strong');
+        title.className = 'project-award-title';
+        title.textContent = `${project.award.name} · ${project.award.title}`;
+        const description = document.createElement('p');
+        description.className = 'project-award-description';
+        description.textContent = project.award.description;
+        caption.append(label, title, description);
+        award.append(media, caption);
+        content.append(award);
       }
       projectModalBody.replaceChildren(content);
     }
