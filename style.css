@@ -520,9 +520,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
   .hero-float { font-size: 9px; }
   .hero-kicker { gap: 7px 9px; font-size: clamp(8px, 2.35vw, 10px); letter-spacing: .05em; }
   .hero-kicker::before { width: 18px; }
-  .hero-kicker > span + span::before { display: none; }
   .project-role { row-gap: 4px; }
-  .project-role > span + span::before { display: none; }
   .contact-details { grid-template-columns: 1fr; }
   .contact-card { padding: 12px; }
   .contact-examples { padding-top: 23px; }
