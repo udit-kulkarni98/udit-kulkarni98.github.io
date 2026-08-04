@@ -129,6 +129,63 @@
     revealItems.forEach(item => item.classList.add('is-visible'));
   }
 
+  // Experience cards unfold vertically as each paper layer reaches the viewport.
+  const experienceGrid = $('.experience-grid');
+  const experienceCards = $$('[data-unfold]', experienceGrid || document);
+  if (experienceGrid && experienceCards.length) {
+    experienceGrid.classList.add('is-unfolding');
+    const syncExperienceCard = card => {
+      const details = $('.experience-card-details', card);
+      details?.setAttribute('aria-hidden', String(!card.classList.contains('is-unfolded')));
+    };
+    experienceCards.forEach((card, index) => {
+      card.classList.toggle('is-current', index === 0);
+      card.classList.remove('is-settled');
+      syncExperienceCard(card);
+    });
+    const unfoldTriggers = experienceCards.slice(1).map(card => {
+      const trigger = document.createElement('span');
+      trigger.className = 'experience-unfold-trigger';
+      trigger.setAttribute('aria-hidden', 'true');
+      card.hidden = true;
+      experienceGrid.insertBefore(trigger, card);
+      return trigger;
+    });
+    const revealCard = (card, previous, trigger) => {
+      card.hidden = false;
+      previous?.classList.remove('is-current');
+      previous?.classList.add('is-settled');
+      card.classList.remove('is-settled');
+      card.classList.add('is-current');
+      trigger?.classList.add('is-open');
+      window.requestAnimationFrame(() => {
+        card.classList.add('is-unfolded');
+        syncExperienceCard(card);
+      });
+    };
+    if ('IntersectionObserver' in window && !reduceMotionQuery.matches) {
+      let nextIndex = 1;
+      const unfoldObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting || nextIndex >= experienceCards.length) return;
+          unfoldObserver.unobserve(entry.target);
+          revealCard(experienceCards[nextIndex], experienceCards[nextIndex - 1], unfoldTriggers[nextIndex - 1]);
+          nextIndex += 1;
+          if (nextIndex < experienceCards.length) unfoldObserver.observe(unfoldTriggers[nextIndex - 1]);
+        });
+      }, { threshold: .5, rootMargin: '0px 0px -12% 0px' });
+      if (unfoldTriggers[0]) unfoldObserver.observe(unfoldTriggers[0]);
+    } else {
+      unfoldTriggers.forEach(trigger => trigger.remove());
+      experienceCards.forEach(card => {
+        card.hidden = false;
+        card.classList.remove('is-current', 'is-settled');
+        card.classList.add('is-unfolded');
+        syncExperienceCard(card);
+      });
+    }
+  }
+
   // Theme menu.
   const themeControl = $('.theme-control');
   const themeToggle = $('#theme-toggle');
