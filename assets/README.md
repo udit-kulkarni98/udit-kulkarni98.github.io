@@ -1,6 +1,6 @@
 # Project artwork
 
-Place the project images in this folder with these exact filenames:
+The portfolio uses the following project artwork:
 
 - `hincol-crm.png`
 - `sales-governance-agent.png`
@@ -8,4 +8,4 @@ Place the project images in this folder with these exact filenames:
 - `citroen.png`
 - `hinduja-hospital-ai-assistant.png`
 
-The project cards already reference these files and include responsive image sizing and accessible alternative text. Add the Hinduja Hospital image when available; its project profile is already wired into the site.
+The project cards reference these files with responsive sizing, explicit dimensions, and accessible alternative text. Project images are supplied locally so the portfolio does not depend on external image hosts.

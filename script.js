@@ -25,7 +25,7 @@
   };
 
   const state = {
-    theme: storage.get('udit-theme', 'auto'),
+    theme: storage.get('udit-theme', 'dark'),
     terminalHistory: readHistory(),
     historyIndex: -1,
     paletteIndex: 0,
@@ -105,6 +105,7 @@
   const navObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
+      if (!$(`.nav-link[href="#${entry.target.id}"]`)) return;
       $$('.nav-link').forEach(link => {
         link.setAttribute('aria-current', link.getAttribute('href') === `#${entry.target.id}` ? 'page' : 'false');
       });
@@ -187,6 +188,71 @@
 
   const currentYear = new Date().getFullYear();
   $$('[data-current-year]').forEach(element => { element.textContent = currentYear; });
+
+  // Count one view per browser profile. A static site cannot identify a person
+  // across devices, private windows, or cleared storage without a real analytics backend.
+  const pageViews = $('#page-views');
+  const viewCounterKey = 'udit-portfolio-view-counted-v1';
+  const viewCounterIncrementEndpoint = 'https://api.counterapi.dev/v1/udit-kulkarni98-portfolio/unique-views/up';
+  const viewCounterGetEndpoint = 'https://api.counterapi.dev/v1/udit-kulkarni98-portfolio/unique-views/';
+  const canPersistView = (() => {
+    try {
+      const testKey = 'udit-portfolio-storage-test';
+      window.localStorage.setItem(testKey, '1');
+      window.localStorage.removeItem(testKey);
+      return true;
+    } catch { return false; }
+  })();
+  const loadViewCounter = async () => {
+    if (!pageViews) return;
+    try {
+      const alreadyCounted = storage.get(viewCounterKey) === 'true';
+      const endpoint = canPersistView && !alreadyCounted ? viewCounterIncrementEndpoint : viewCounterGetEndpoint;
+      const response = await fetch(endpoint, { headers: { Accept: 'application/json' }, cache: 'no-store', credentials: 'omit' });
+      if (!response.ok) throw new Error(`Counter request failed: ${response.status}`);
+      const payload = await response.json();
+      const count = Number(payload?.data?.value ?? payload?.data?.count ?? payload?.value ?? payload?.count);
+      if (!Number.isFinite(count)) throw new Error('Invalid counter response');
+      if (canPersistView && !alreadyCounted) storage.set(viewCounterKey, 'true');
+      pageViews.textContent = new Intl.NumberFormat('en-IN').format(count);
+      pageViews.removeAttribute('data-loading');
+    } catch {
+      pageViews.textContent = '—';
+      pageViews.setAttribute('aria-label', 'View count unavailable');
+    }
+  };
+  loadViewCounter();
+
+  const counters = $$('[data-counter]');
+  const animateCounter = element => {
+    const target = Number(element.dataset.target || 0);
+    const suffix = element.dataset.suffix || '';
+    if (reduceMotionQuery.matches || target === 0) {
+      element.textContent = `${target}${suffix}`;
+      return;
+    }
+    const startedAt = performance.now();
+    const duration = 850;
+    const tick = now => {
+      const progress = Math.min(1, (now - startedAt) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      element.textContent = `${Math.round(target * eased)}${suffix}`;
+      if (progress < 1) window.requestAnimationFrame(tick);
+    };
+    window.requestAnimationFrame(tick);
+  };
+  if ('IntersectionObserver' in window && !reduceMotionQuery.matches) {
+    const counterObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      });
+    }, { threshold: .5 });
+    counters.forEach(counter => counterObserver.observe(counter));
+  } else {
+    counters.forEach(animateCounter);
+  }
 
   // Copy email with a graceful fallback and status announcement.
   const copyEmail = async button => {
@@ -356,7 +422,7 @@
   const terminalCommands = ['help', 'about', 'skills', 'projects', 'experience', 'contact', 'resume', 'github', 'linkedin', 'email', 'clear', 'theme', 'history'];
   const fullCommand = command => `${terminalPrefix} ${command}`;
   const commandDescriptions = {
-    help: 'Show available commands', about: 'Read the professional summary', skills: 'Explore technical focus areas', projects: 'See selected systems and platforms', experience: 'View work history and education', contact: 'Show contact details', resume: 'Open the PDF resume', github: 'Open GitHub profile', linkedin: 'Open LinkedIn profile', email: 'Compose an email', clear: 'Clear terminal output', theme: 'Change light, dark, or auto theme', history: 'Show command history'
+    help: 'Show available commands', about: 'Read the professional summary', skills: 'Explore technical focus areas', projects: 'See selected systems and platforms', experience: 'View work history and education', contact: 'Show contact details', resume: 'Open the PDF resume', github: 'Open GitHub profile', linkedin: 'Open LinkedIn profile', email: 'Compose an email', clear: 'Clear terminal output', theme: 'Cycle light, dark, or auto', history: 'Show command history'
   };
   state.terminalHistory = state.terminalHistory.map(command => {
     const normalized = command.trim().toLowerCase().replace(/\s+/g, ' ');
@@ -376,20 +442,35 @@
   const bootTyping = () => {
     const typingTarget = $('[data-typing]');
     if (!typingTarget || reduceMotionQuery.matches) return;
-    const text = typingTarget.dataset.typing || typingTarget.textContent;
-    typingTarget.textContent = '';
-    let index = 0;
-    const interval = window.setInterval(() => {
-      typingTarget.textContent += text[index++];
-      if (index >= text.length) window.clearInterval(interval);
-    }, 35);
+    const commands = ['php artisan optimize', 'php artisan queue:work', 'php artisan test'];
+    let commandIndex = 0;
+    const typeCommand = () => {
+      const text = commands[commandIndex];
+      typingTarget.textContent = '';
+      let index = 0;
+      const interval = window.setInterval(() => {
+        typingTarget.textContent += text[index++];
+        if (index >= text.length) {
+          window.clearInterval(interval);
+          window.setTimeout(() => {
+            commandIndex = (commandIndex + 1) % commands.length;
+            typeCommand();
+          }, 3200);
+        }
+      }, 35);
+    };
+    typeCommand();
   };
   window.setTimeout(bootTyping, 520);
   const setTerminalStatus = message => { if (terminalStatus) terminalStatus.textContent = message; };
-  const runCommand = rawInput => {
+  const parseCommand = rawInput => {
     const normalizedInput = rawInput.trim().toLowerCase().replace(/\s+/g, ' ');
+    const match = normalizedInput.match(/^php artisan(?:\s+(.+))?$/);
+    return { normalizedInput, command: match?.[1] || '' };
+  };
+  const runCommand = rawInput => {
+    const { normalizedInput, command } = parseCommand(rawInput);
     if (!normalizedInput) return;
-    const command = normalizedInput.startsWith(`${terminalPrefix} `) ? normalizedInput.slice(terminalPrefix.length + 1) : '';
     if (command && command !== 'clear' && terminalCommands.includes(command)) {
       state.terminalHistory = [...state.terminalHistory.filter(item => item !== normalizedInput), normalizedInput].slice(-30);
       storage.set('udit-terminal-history', JSON.stringify(state.terminalHistory));
@@ -412,16 +493,16 @@
         writeTerminal(`<span class="terminal-green">Available commands:</span><div class="terminal-command-list">${terminalCommands.map(item => `<span class="terminal-help-row"><code>${fullCommand(item)}</code><span>${commandDescriptions[item]}</span></span>`).join('')}</div>`);
         break;
       case 'about':
-        writeTerminal('Senior Software Engineer & Team Lead specializing in PHP 8.x, Laravel, Symfony, Drupal, and reliable product engineering.');
+        writeTerminal('Software Engineer at Publicis Digital Experience building enterprise software with Laravel, PHP, Python, FastAPI, and Generative AI.');
         break;
       case 'skills':
-        writeTerminal('PHP 8.x · Laravel · Symfony · Drupal · Python · MySQL · Redis · Docker · AWS S3 · PHPUnit');
+        writeTerminal('Laravel · PHP · Drupal · Python · FastAPI · Azure OpenAI · LangChain · LangGraph · MySQL · Redis · Docker');
         break;
       case 'projects':
         writeTerminal('HINCOL CRM · Sales Governance Agent · Citroën · Hinduja Hospital AI Assistant · Disney+ Hotstar');
         break;
       case 'experience':
-        writeTerminal('Publicis Digital Experience (PDX) — Jan 2025 to Present · Razorfish — Jan 2023 to Dec 2024 · Publicis Media — Jan 2022 to Jul 2022');
+        writeTerminal('Publicis Digital Experience (PDX) — May 2024 to Present · Associate Software Developer — Jan 2023 to May 2024 · Publicis Media — Jan 2022 to Jul 2022');
         break;
       case 'contact':
         writeTerminal('Mumbai, India · <a class="terminal-link" href="mailto:udit.kulkarni98@gmail.com">udit.kulkarni98@gmail.com</a> · 9892955429');
@@ -432,13 +513,15 @@
         break;
       case 'github':
         writeTerminal('Opening <a class="terminal-link" href="https://github.com/udit-kulkarni98" target="_blank" rel="noreferrer">github.com/udit-kulkarni98</a>…');
+        window.open('https://github.com/udit-kulkarni98', '_blank', 'noopener,noreferrer');
         break;
       case 'linkedin':
         writeTerminal('Opening <a class="terminal-link" href="https://linkedin.com/in/udit-kulkarni" target="_blank" rel="noreferrer">linkedin.com/in/udit-kulkarni</a>…');
+        window.open('https://linkedin.com/in/udit-kulkarni', '_blank', 'noopener,noreferrer');
         break;
       case 'email':
-        window.location.href = emailHref;
-        writeTerminal('Opening your mail client…');
+        writeTerminal(`Opening <a class="terminal-link" href="${webmailHref}" target="_blank" rel="noreferrer">Gmail compose</a>…`);
+        window.open(webmailHref, '_blank', 'noopener,noreferrer');
         break;
       case 'clear':
         if (terminalOutput) terminalOutput.replaceChildren();
@@ -455,8 +538,22 @@
         break;
     }
   };
+  const submitTerminal = () => {
+    if (!terminalInput) return;
+    const value = terminalInput.value;
+    if (!value.trim()) return;
+    runCommand(value);
+    terminalInput.value = '';
+  };
+  $('#console-form')?.addEventListener('submit', event => {
+    event.preventDefault();
+    submitTerminal();
+  });
   terminalInput?.addEventListener('keydown', event => {
-    if (event.key === 'Enter') { runCommand(terminalInput.value); terminalInput.value = ''; }
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      submitTerminal();
+    }
     if (event.key === 'ArrowUp') {
       event.preventDefault();
       if (!state.terminalHistory.length) return;
