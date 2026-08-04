@@ -493,7 +493,7 @@
         writeTerminal(`<span class="terminal-green">Available commands:</span><div class="terminal-command-list">${terminalCommands.map(item => `<span class="terminal-help-row"><code>${fullCommand(item)}</code><span>${commandDescriptions[item]}</span></span>`).join('')}</div>`);
         break;
       case 'about':
-        writeTerminal('Software Engineer at Publicis Digital Experience building enterprise software with Laravel, PHP, Python, FastAPI, and Generative AI.');
+        writeTerminal('Software Developer at Publicis Digital Experience building enterprise software with Laravel, PHP, Python, FastAPI, and Generative AI.');
         break;
       case 'skills':
         writeTerminal('Laravel · PHP · Drupal · Python · FastAPI · Azure OpenAI · LangChain · LangGraph · MySQL · Redis · Docker');
@@ -502,7 +502,7 @@
         writeTerminal('HINCOL CRM · Sales Governance Agent · Citroën · Hinduja Hospital AI Assistant · Disney+ Hotstar');
         break;
       case 'experience':
-        writeTerminal('Publicis Digital Experience (PDX) — May 2024 to Present · Associate Software Developer — Jan 2023 to May 2024 · Publicis Media — Jan 2022 to Jul 2022');
+        writeTerminal('Publicis Digital Experience (PDX) — Software Developer, May 2026 to Present · Associate Software Developer, Jan 2023 to May 2026 · Publicis Media — Software Developer (Internship), Jan 2022 to Jul 2022');
         break;
       case 'contact':
         writeTerminal('Mumbai, India · <a class="terminal-link" href="mailto:udit.kulkarni98@gmail.com">udit.kulkarni98@gmail.com</a> · 9892955429');
