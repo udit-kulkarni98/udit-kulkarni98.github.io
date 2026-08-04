@@ -85,7 +85,7 @@ img, svg { display: block; }
 .skip-link:focus { transform: translateY(0); }
 
 /* Shared details */
-.eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; color: var(--red-dark); font: 700 10px/1 var(--mono); letter-spacing: .19em; text-transform: uppercase; }
+.eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; color: var(--red-dark); font: 700 10px/1 var(--mono); letter-spacing: .19em; word-spacing: .18em; text-transform: uppercase; }
 .eyebrow::before { width: 7px; height: 7px; flex: none; border-radius: 50%; background: var(--red); content: ""; }
 .eyebrow--dark { color: #ec6b69; }
 h1, h2, h3, p { overflow-wrap: break-word; }
