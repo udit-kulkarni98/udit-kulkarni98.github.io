@@ -14,6 +14,9 @@
     },
     set(key, value) {
       try { window.localStorage.setItem(key, value); } catch { /* Storage is optional. */ }
+    },
+    remove(key) {
+      try { window.localStorage.removeItem(key); } catch { /* Storage is optional. */ }
     }
   };
 
@@ -252,6 +255,7 @@
   const viewCounterKey = 'udit-portfolio-view-counted-v1';
   const viewCounterIncrementEndpoint = 'https://api.counterapi.dev/v1/udit-kulkarni98-portfolio/unique-views/up';
   const viewCounterGetEndpoint = 'https://api.counterapi.dev/v1/udit-kulkarni98-portfolio/unique-views/';
+  const viewCounterResetEndpoint = 'https://api.counterapi.dev/v1/udit-kulkarni98-portfolio/unique-views/set?count=0';
   const canPersistView = (() => {
     try {
       const testKey = 'udit-portfolio-storage-test';
@@ -539,6 +543,7 @@
   const terminalStatus = $('#console-status');
   const terminalPrefix = 'php artisan';
   const terminalCommands = ['help', 'about', 'skills', 'projects', 'experience', 'contact', 'resume', 'github', 'linkedin', 'email', 'clear', 'theme', 'history'];
+  const hiddenTerminalCommand = 'reset-views';
   const fullCommand = command => `${terminalPrefix} ${command}`;
   const commandDescriptions = {
     help: 'Show available commands', about: 'Read the professional summary', skills: 'Explore technical focus areas', projects: 'See selected systems and platforms', experience: 'View work history and education', contact: 'Show contact details', resume: 'Open the PDF resume', github: 'Open GitHub profile', linkedin: 'Open LinkedIn profile', email: 'Compose an email', clear: 'Clear terminal output', theme: 'Cycle light, dark, or auto', history: 'Show command history'
@@ -556,6 +561,30 @@
     line.innerHTML = content;
     terminalOutput.append(line);
     terminalOutput.scrollTop = terminalOutput.scrollHeight;
+  };
+  const resetViewCounter = async () => {
+    if (!window.confirm('Reset the unique profile view counter to zero?')) {
+      writeTerminal('View counter reset cancelled.');
+      return;
+    }
+    writeTerminal('Resetting unique profile views…');
+    try {
+      const response = await fetch(viewCounterResetEndpoint, { headers: { Accept: 'application/json' }, cache: 'no-store', credentials: 'omit' });
+      if (!response.ok) throw new Error(`Counter reset failed: ${response.status}`);
+      const payload = await response.json();
+      const count = Number(payload?.data?.value ?? payload?.data?.count ?? payload?.value ?? payload?.count);
+      if (!Number.isFinite(count)) throw new Error('Invalid counter response');
+      storage.remove(viewCounterKey);
+      const formattedCount = new Intl.NumberFormat('en-IN').format(count);
+      if (pageViews) {
+        pageViews.textContent = formattedCount;
+        pageViews.removeAttribute('data-loading');
+        pageViews.setAttribute('aria-label', `${formattedCount} unique profile views`);
+      }
+      writeTerminal(`<span class="terminal-green">Unique view counter reset to ${formattedCount}.</span>`);
+    } catch {
+      writeTerminal('Unable to reset the view counter. Check the connection and try again.', 'error');
+    }
   };
 
   const bootTyping = () => {
@@ -602,7 +631,7 @@
       writeTerminal(`Use <span class="terminal-green">${terminalPrefix} &lt;command&gt;</span>. Type <span class="terminal-green">${fullCommand('help')}</span> to see the list.`, 'error');
       return;
     }
-    if (!terminalCommands.includes(command)) {
+    if (!terminalCommands.includes(command) && command !== hiddenTerminalCommand) {
       writeTerminal(`Unknown command: ${escapeHTML(command)}. Type <span class="terminal-green">${fullCommand('help')}</span> for the command list.`, 'error');
       return;
     }
@@ -641,6 +670,9 @@
       case 'email':
         writeTerminal(`Opening <a class="terminal-link" href="${webmailHref}" target="_blank" rel="noreferrer">Gmail compose</a>…`);
         window.open(webmailHref, '_blank', 'noopener,noreferrer');
+        break;
+      case hiddenTerminalCommand:
+        resetViewCounter();
         break;
       case 'clear':
         if (terminalOutput) terminalOutput.replaceChildren();
