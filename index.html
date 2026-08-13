@@ -21,9 +21,6 @@
   <meta name="twitter:description" content="Software Developer building scalable enterprise software with Laravel, PHP, Python, FastAPI, and Generative AI." />
   <meta name="twitter:image" content="https://udit-kulkarni98.github.io/assets/hincol-crm.png" />
   <title>Udit Kulkarni | Software Developer at Publicis Digital Experience</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./style.css" />
   <script type="application/ld+json">
     {
@@ -55,14 +52,16 @@
       </a>
 
       <nav class="nav-links" id="primary-nav" aria-label="Primary navigation">
-        <a class="nav-link" href="#projects" aria-current="page">Work</a>
+        <a class="nav-link" href="#top" aria-current="page">Home</a>
+        <a class="nav-link" href="#projects" aria-current="false">Work</a>
         <a class="nav-link" href="#about" aria-current="false">About</a>
+        <a class="nav-link" href="#skills" aria-current="false">Skills</a>
         <a class="nav-link" href="#experience" aria-current="false">Experience</a>
         <a class="nav-link" href="#contact" aria-current="false">Contact</a>
       </nav>
 
       <div class="header-actions">
-        <a class="button button--outline header-cta" href="#contact">Let’s build <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="button button--outline header-cta js-magnetic" href="#contact">Let's Talk <span class="status-dot" aria-hidden="true"></span></a>
         <div class="theme-control">
           <button class="icon-button" id="theme-toggle" type="button" aria-label="Choose color theme" aria-haspopup="menu" aria-expanded="false" aria-controls="theme-menu">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42" /></svg>
@@ -92,10 +91,10 @@
         <div class="hero-content" data-reveal>
           <p class="hero-kicker"><span>Software Developer</span><span class="hero-kicker-separator" aria-hidden="true">·</span><span class="hero-company-full">Publicis Digital Experience</span><span class="hero-company-short" aria-hidden="true">PDX</span></p>
           <h1 id="hero-title">Building production-ready<br /><em>software that solves real business problems.</em></h1>
-          <p class="hero-copy">I design and build enterprise applications, AI-powered systems, and intelligent workflows that turn complex business problems into scalable software.</p>
+          <p class="hero-copy">I build production-ready enterprise software at Publicis Digital Experience, specializing in enterprise backend development with Laravel and PHP at the core. My work brings together Python, FastAPI, Generative AI, Azure OpenAI, and thoughtful backend architecture to turn complex business needs into scalable products.</p>
           <div class="button-row">
-            <a class="button button--solid" href="#contact">Let’s build <span class="arrow" aria-hidden="true">→</span></a>
-            <a class="button button--outline" href="#projects">View my work <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="button button--solid js-magnetic" href="#projects">View projects <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="button button--outline js-magnetic" href="#contact">Let's connect <span class="arrow" aria-hidden="true">→</span></a>
           </div>
         </div>
 
@@ -133,9 +132,9 @@
       </div>
 
       <div class="container stats-row" data-stagger aria-label="Career highlights">
-        <div class="stat" data-reveal><strong>Software engineering</strong><span>Backend · AI · Product systems</span></div>
-        <div class="stat" data-reveal><strong>4+ years</strong><span>Production software</span></div>
-        <div class="stat" data-reveal><strong>Mumbai</strong><span>India</span></div>
+        <div class="stat" data-reveal><strong>Laravel + PHP + React JS</strong><span>Primary engineering stack</span></div>
+        <div class="stat" data-reveal><strong>Jan 2023</strong><span>PDX role began</span></div>
+        <div class="stat" data-reveal><strong>Mumbai</strong><span>Based in India</span></div>
       </div>
     </section>
 
@@ -147,63 +146,33 @@
         </div>
         <div class="project-grid" data-stagger>
           <article class="project-card project-card--featured" data-reveal>
-            <button class="project-card-hitarea" type="button" data-project-open="hincol-crm" aria-label="Open details for HINCOL CRM"></button>
-            <div class="project-image project-image--hincol"><span class="project-award-badge"><span aria-hidden="true">✦</span> Awarded</span><img class="project-cover-image" src="./assets/hincol-crm.png" alt="HINCOL CRM Project interface" width="1200" height="800" loading="eager" fetchpriority="high" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-title-row"><div><h3 class="project-title">HINCOL CRM</h3><p class="project-role">Enterprise sales &amp; governance platform</p></div><span class="project-open-mark" aria-hidden="true">↗</span></div>
-              <p class="project-description">Enterprise sales and governance platform supporting sales operations, workflows, reporting, and intelligent business processes.</p>
-              <p class="project-contribution"><span>Contribution</span> Backend architecture · REST APIs · AI integration · Data systems</p>
-              <div class="project-tech"><span>Tech</span><div class="tag-row"><span class="tag">Laravel</span><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">SAP APIs</span><span class="tag">Redis</span></div></div>
-              <button class="project-open" type="button" data-project-open="hincol-crm">View project profile <span aria-hidden="true">→</span></button>
-            </div>
+            <button class="project-card-hitarea" type="button" data-project-open="hincol-crm" aria-label="Open details for HINCOL CRM Project"></button>
+            <div class="project-image project-image--hincol" aria-label="HINCOL CRM project image"><span class="project-award-badge"><span aria-hidden="true">✦</span> Awarded</span><img class="project-cover-image" src="./assets/hincol-crm.png" alt="HINCOL CRM Project interface" width="1200" height="800" loading="eager" fetchpriority="high" decoding="async" /></div>
+            <div class="project-info"><div class="project-title-row"><div><h3 class="project-title">HINCOL CRM Project</h3><p class="project-role">Backend &amp; CRM Engineering</p></div><span class="project-open-mark" aria-hidden="true">↗</span></div><p class="project-description">A modular Laravel enterprise platform spanning CRM, quotations, projects, orders, operations, SAP integrations, and governed business analytics.</p><div class="tag-row"><span class="tag">PHP</span><span class="tag">Laravel</span><span class="tag">MySQL</span><span class="tag">REST APIs</span><span class="tag">SAP</span></div><button class="project-open" type="button" data-project-open="hincol-crm">Read project profile <span aria-hidden="true">→</span></button></div>
           </article>
 
           <article class="project-card" data-reveal>
             <button class="project-card-hitarea" type="button" data-project-open="sales-governance" aria-label="Open details for Sales Governance Agent"></button>
-            <div class="project-image project-image--sales"><img class="project-cover-image" src="./assets/sales-governance-agent.png" alt="HINCOL Sales Governance Agent illustration" width="1254" height="1254" loading="lazy" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-title-row"><div><h3 class="project-title">Sales Governance Agent</h3><p class="project-role">Sales intelligence · AI engineering</p></div><span class="project-open-mark" aria-hidden="true">↗</span></div>
-              <p class="project-description">A governed natural-language intelligence layer for secure answers, dashboards, recommendations, and decision-ready reports.</p>
-              <p class="project-contribution"><span>Contribution</span> AI orchestration · Secure data access · Text-to-SQL</p>
-              <div class="project-tech"><span>Tech</span><div class="tag-row"><span class="tag">FastAPI</span><span class="tag">LangGraph</span><span class="tag">Azure OpenAI</span><span class="tag">Qdrant</span><span class="tag">Redis</span></div></div>
-              <button class="project-open" type="button" data-project-open="sales-governance">View project profile <span aria-hidden="true">→</span></button>
-            </div>
+            <div class="project-image project-image--sales" aria-label="Sales Governance Agent project image"><img class="project-cover-image" src="./assets/sales-governance-agent.png" alt="HINCOL Sales Governance Agent illustration" width="1254" height="1254" loading="lazy" decoding="async" /></div>
+            <div class="project-info"><div class="project-title-row"><div><h3 class="project-title">Sales Governance Agent</h3><p class="project-role">AI &amp; Backend Engineering</p></div><span class="project-open-mark" aria-hidden="true">↗</span></div><p class="project-description">A governed natural-language intelligence layer that turns business data into secure answers, dashboards, recommendations, and decision-ready reports.</p><div class="tag-row"><span class="tag">FastAPI</span><span class="tag">LangGraph</span><span class="tag">Azure OpenAI</span><span class="tag">MySQL</span><span class="tag">Qdrant</span></div><button class="project-open" type="button" data-project-open="sales-governance">Read project profile <span aria-hidden="true">→</span></button></div>
           </article>
 
           <article class="project-card" data-reveal>
-            <button class="project-card-hitarea" type="button" data-project-open="citroen" aria-label="Open details for Citroën"></button>
-            <div class="project-image project-image--citroen"><img class="project-cover-image" src="./assets/citroen.png" alt="Citroën logo" width="2048" height="1152" loading="lazy" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-title-row"><div><h3 class="project-title">Citroën</h3><p class="project-role">Digital experience · Backend platform</p></div><span class="project-open-mark" aria-hidden="true">↗</span></div>
-              <p class="project-description">A Drupal and PHP platform powering dealer discovery, lead capture, CRM sync, and performance-focused digital experiences.</p>
-              <p class="project-contribution"><span>Contribution</span> Drupal backend · REST APIs · CRM integrations</p>
-              <div class="project-tech"><span>Tech</span><div class="tag-row"><span class="tag">PHP</span><span class="tag">Drupal</span><span class="tag">Symfony</span><span class="tag">REST APIs</span><span class="tag">OAuth</span></div></div>
-              <button class="project-open" type="button" data-project-open="citroen">View project profile <span aria-hidden="true">→</span></button>
-            </div>
+            <button class="project-card-hitarea" type="button" data-project-open="citroen" aria-label="Open details for Citroën project"></button>
+            <div class="project-image project-image--citroen" aria-label="Citroën project image"><img class="project-cover-image" src="./assets/citroen.png" alt="Citroën logo" width="2048" height="1152" loading="lazy" decoding="async" /></div>
+            <div class="project-info"><div class="project-title-row"><div><h3 class="project-title">Citroën</h3><p class="project-role">Backend Platform Engineering</p></div><span class="project-open-mark" aria-hidden="true">↗</span></div><p class="project-description">A Drupal and PHP platform powering dealer discovery, lead capture, CRM sync, and performance-focused digital experiences for Citroën India.</p><div class="tag-row"><span class="tag">PHP</span><span class="tag">Symfony</span><span class="tag">Drupal</span><span class="tag">OpenID</span><span class="tag">OAuth</span></div><button class="project-open" type="button" data-project-open="citroen">Read project profile <span aria-hidden="true">→</span></button></div>
           </article>
 
           <article class="project-card" data-reveal>
             <button class="project-card-hitarea" type="button" data-project-open="hinduja-ai" aria-label="Open details for Hinduja Hospital AI Assistant"></button>
-            <div class="project-image project-image--hinduja"><img class="project-cover-image" src="./assets/hinduja-hospital-ai-assistant.png" alt="Hinduja Hospital AI Assistant illustration" width="3840" height="2160" loading="lazy" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-title-row"><div><h3 class="project-title">Hinduja Hospital AI Assistant</h3><p class="project-role">Healthcare technology · AI assistant</p></div><span class="project-open-mark" aria-hidden="true">↗</span></div>
-              <p class="project-description">A grounded healthcare assistant connecting trusted hospital knowledge with live service workflows and patient-friendly actions.</p>
-              <p class="project-contribution"><span>Contribution</span> Retrieval workflows · Hospital APIs · Streaming responses</p>
-              <div class="project-tech"><span>Tech</span><div class="tag-row"><span class="tag">FastAPI</span><span class="tag">LangChain</span><span class="tag">Azure OpenAI</span><span class="tag">Qdrant</span><span class="tag">Docker</span></div></div>
-              <button class="project-open" type="button" data-project-open="hinduja-ai">View project profile <span aria-hidden="true">→</span></button>
-            </div>
+            <div class="project-image project-image--hinduja" aria-label="Hinduja Hospital AI Assistant project image"><img class="project-cover-image" src="./assets/hinduja-hospital-ai-assistant.png" alt="Hinduja Hospital AI Assistant illustration" width="3840" height="2160" loading="lazy" decoding="async" /></div>
+            <div class="project-info"><div class="project-title-row"><div><h3 class="project-title">Hinduja Hospital AI Assistant</h3><p class="project-role">AI Product Engineering</p></div><span class="project-open-mark" aria-hidden="true">↗</span></div><p class="project-description">A grounded healthcare assistant that connects trusted hospital knowledge with live service workflows, contextual conversations, and patient-friendly actions.</p><div class="tag-row"><span class="tag">FastAPI</span><span class="tag">LangChain</span><span class="tag">Azure OpenAI</span><span class="tag">Qdrant</span><span class="tag">Docker</span></div><button class="project-open" type="button" data-project-open="hinduja-ai">Read project profile <span aria-hidden="true">→</span></button></div>
           </article>
 
           <article class="project-card" data-reveal>
-            <button class="project-card-hitarea" type="button" data-project-open="disney-plus" aria-label="Open details for Disney Plus Hotstar"></button>
-            <div class="project-image project-image--disney"><img class="project-cover-image" src="./assets/disney-plus-hotstar.png" alt="Disney Plus Hotstar logo" width="1100" height="700" loading="lazy" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-title-row"><div><h3 class="project-title">Disney+ Hotstar</h3><p class="project-role">Digital experience · Delivery</p></div><span class="project-open-mark" aria-hidden="true">↗</span></div>
-              <p class="project-description">Digital delivery across international programs, with an emphasis on reliable execution and clear project coordination.</p>
-              <p class="project-contribution"><span>Contribution</span> Frontend delivery · Project coordination · Client communication</p>
-              <div class="project-tech"><span>Tech</span><div class="tag-row"><span class="tag">PHP</span><span class="tag">Laravel</span><span class="tag">Drupal</span><span class="tag">APIs</span><span class="tag">Docker</span></div></div>
-              <button class="project-open" type="button" data-project-open="disney-plus">View project profile <span aria-hidden="true">→</span></button>
-            </div>
+            <button class="project-card-hitarea" type="button" data-project-open="disney-plus" aria-label="Open details for Disney Plus Hotstar project"></button>
+            <div class="project-image project-image--disney" aria-label="Disney Plus Hotstar project image"><img class="project-cover-image" src="./assets/disney-plus-hotstar.png" alt="Disney Plus Hotstar logo" width="1100" height="700" loading="lazy" decoding="async" /></div>
+            <div class="project-info"><div class="project-title-row"><div><h3 class="project-title">Disney+ Hotstar</h3><p class="project-role">Backend Delivery</p></div><span class="project-open-mark" aria-hidden="true">↗</span></div><p class="project-description">Digital delivery and project coordination across international Disney+ Hotstar programs, with an emphasis on communication, reliability, and execution.</p><div class="tag-row"><span class="tag">PHP</span><span class="tag">Laravel</span><span class="tag">Drupal</span><span class="tag">APIs</span><span class="tag">Docker</span></div><button class="project-open" type="button" data-project-open="disney-plus">Read project profile <span aria-hidden="true">→</span></button></div>
           </article>
         </div>
         <aside class="project-recognition" data-reveal aria-labelledby="project-recognition-title">
@@ -230,27 +199,12 @@
           <h2 id="about-title">Backend systems with a product mindset.</h2>
         </div>
         <div class="about-copy" data-reveal>
-          <p>I’m Udit Kulkarni, a Software Developer at Publicis Digital Experience. I build scalable enterprise applications, AI-powered products, dependable REST APIs, and production-ready backend foundations for complex operational problems.</p>
+          <p>I’m Udit Kulkarni, a Software Developer at Publicis Digital Experience. I enjoy turning complex operational problems into scalable enterprise applications, AI-powered products, dependable REST APIs, and production-ready backend systems.</p>
           <div class="about-facts" aria-label="Professional focus">
             <span><strong>Core</strong> Laravel · PHP · Python</span>
-            <span><strong>Focus</strong> Enterprise software · AI-powered products</span>
-            <span><strong>Based</strong> Mumbai · India</span>
+            <span><strong>Focus</strong> Enterprise software · AI systems</span>
+            <span><strong>Based</strong> Mumbai, India</span>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="capabilities" id="capabilities" data-section aria-labelledby="capabilities-title">
-      <div class="container">
-        <div class="section-heading capabilities-heading" data-reveal>
-          <div><p class="eyebrow">Engineering capability</p><h2 id="capabilities-title">Where software meets <em>intelligence.</em></h2></div>
-          <p class="section-intro">I build AI-powered systems that combine modern application architecture, structured data, retrieval, APIs, and intelligent workflows for real production environments.</p>
-        </div>
-        <div class="capability-grid" data-stagger>
-          <article class="capability-card" data-reveal><span class="capability-index">01</span><h3>Product engineering</h3><ul><li>Enterprise applications</li><li>Business workflows</li><li>Production APIs</li><li>Scalable backend systems</li></ul></article>
-          <article class="capability-card" data-reveal><span class="capability-index">02</span><h3>AI engineering</h3><ul><li>RAG systems</li><li>AI assistants</li><li>LLM workflows</li><li>AI agents</li></ul></article>
-          <article class="capability-card" data-reveal><span class="capability-index">03</span><h3>Backend &amp; data</h3><ul><li>Laravel · PHP · Python</li><li>FastAPI</li><li>MySQL · PostgreSQL · SQLite</li><li>Qdrant</li></ul></article>
-          <article class="capability-card" data-reveal><span class="capability-index">04</span><h3>System design</h3><ul><li>REST APIs</li><li>Microservices</li><li>Data architecture</li><li>Integration architecture</li></ul></article>
         </div>
       </div>
     </section>
@@ -258,17 +212,23 @@
     <section class="skills" id="skills" data-section aria-labelledby="skills-title">
       <div class="container skills-grid">
         <div data-reveal>
-          <p class="eyebrow eyebrow--dark">Engineering toolkit</p>
+          <p class="eyebrow eyebrow--dark">Technical skills</p>
           <h2 id="skills-title">The stack behind<br />production software.</h2>
-          <p class="skills-intro">A focused toolkit for enterprise applications, data-heavy workflows, and AI-assisted products.</p>
           <div class="stack-categories">
-            <article class="skill-category skill-category--core"><h3 class="skill-category-title">Backend</h3><ul class="stack-list"><li class="stack-item stack-item--core">Laravel</li><li class="stack-item stack-item--core">PHP</li><li class="stack-item">Python</li><li class="stack-item">FastAPI</li></ul></article>
-            <article class="skill-category"><h3 class="skill-category-title">Frontend</h3><ul class="stack-list"><li class="stack-item">React</li><li class="stack-item">JavaScript</li><li class="stack-item">HTML</li><li class="stack-item">CSS</li></ul></article>
-            <article class="skill-category skill-category--core"><h3 class="skill-category-title">AI &amp; generative AI</h3><ul class="stack-list"><li class="stack-item stack-item--core">Azure OpenAI</li><li class="stack-item">OpenAI APIs</li><li class="stack-item">LangChain</li><li class="stack-item">LangGraph</li><li class="stack-item">RAG</li><li class="stack-item">AI Agents</li></ul></article>
-            <article class="skill-category"><h3 class="skill-category-title">Data</h3><ul class="stack-list"><li class="stack-item">MySQL</li><li class="stack-item">PostgreSQL</li><li class="stack-item">SQLite</li><li class="stack-item">Qdrant</li><li class="stack-item">Redis</li></ul></article>
-            <article class="skill-category"><h3 class="skill-category-title">Infrastructure</h3><ul class="stack-list"><li class="stack-item">Docker</li><li class="stack-item">Nginx</li><li class="stack-item">Git</li><li class="stack-item">AWS</li></ul></article>
+            <div class="skill-category"><span class="skill-category-title">Languages</span><div class="stack-list"><span class="stack-item"><i>php</i>PHP</span><span class="stack-item"><i>Py</i>Python</span><span class="stack-item"><i>JS</i>JavaScript</span><span class="stack-item"><i>C++</i>C++</span><span class="stack-item"><i>SQL</i>SQL</span></div></div>
+            <div class="skill-category skill-category--featured"><span class="skill-category-title">Backend development</span><div class="stack-list"><span class="stack-item"><i>⌁</i>Laravel</span><span class="stack-item"><i>php</i>PHP</span><span class="stack-item"><i>Dr</i>Drupal</span><span class="stack-item"><i>FA</i>FastAPI</span><span class="stack-item"><i>API</i>RESTful APIs</span><span class="stack-item"><i>MS</i>Microservices</span></div></div>
+            <div class="skill-category"><span class="skill-category-title">Frontend development</span><div class="stack-list"><span class="stack-item"><i>R</i>ReactJS</span><span class="stack-item"><i>JS</i>JavaScript</span><span class="stack-item"><i>H5</i>HTML5</span><span class="stack-item"><i>C3</i>CSS3</span><span class="stack-item"><i>B</i>Bootstrap</span><span class="stack-item"><i>JQ</i>jQuery</span></div></div>
+            <div class="skill-category skill-category--featured"><span class="skill-category-title">AI & Generative AI</span><div class="stack-list"><span class="stack-item"><i>AZ</i>Azure OpenAI</span><span class="stack-item"><i>OAI</i>OpenAI APIs</span><span class="stack-item"><i>λ</i>LangChain</span><span class="stack-item"><i>LG</i>LangGraph</span><span class="stack-item"><i>R</i>RAG</span><span class="stack-item"><i>AG</i>AI Agents</span><span class="stack-item"><i>PE</i>Prompt Engineering</span></div></div>
+            <div class="skill-category"><span class="skill-category-title">Databases & vector search</span><div class="stack-list"><span class="stack-item"><i>◆</i>MySQL</span><span class="stack-item"><i>PG</i>PostgreSQL</span><span class="stack-item"><i>SQ</i>SQLite</span><span class="stack-item"><i>Q</i>Qdrant</span><span class="stack-item"><i>SS</i>Semantic Search</span><span class="stack-item"><i>VS</i>Vector Search</span></div></div>
+            <div class="skill-category"><span class="skill-category-title">Cloud & DevOps</span><div class="stack-list"><span class="stack-item"><i>AZ</i>Microsoft Azure</span><span class="stack-item"><i>aws</i>AWS</span><span class="stack-item"><i>◒</i>Docker</span><span class="stack-item"><i>DC</i>Docker Compose</span><span class="stack-item"><i>CI</i>CI/CD</span><span class="stack-item"><i>Li</i>Linux</span><span class="stack-item"><i>N</i>Nginx</span></div></div>
+            <div class="skill-category"><span class="skill-category-title">Caching & performance</span><div class="stack-list"><span class="stack-item"><i>◆</i>Redis</span><span class="stack-item"><i>AC</i>Application Caching</span><span class="stack-item"><i>QO</i>Query Optimization</span><span class="stack-item"><i>PO</i>Performance Optimization</span></div></div>
+            <div class="skill-category"><span class="skill-category-title">API & security</span><div class="stack-list"><span class="stack-item"><i>API</i>REST APIs</span><span class="stack-item"><i>JWT</i>JWT Authentication</span><span class="stack-item"><i>O</i>OAuth</span><span class="stack-item"><i>RB</i>RBAC</span><span class="stack-item"><i>RS</i>Row-Level Security</span></div></div>
+            <div class="skill-category"><span class="skill-category-title">Architecture</span><div class="stack-list"><span class="stack-item"><i>MT</i>Multi-Tenant Architecture</span><span class="stack-item"><i>HC</i>Headless CMS</span><span class="stack-item"><i>MS</i>Microservices</span><span class="stack-item"><i>MVC</i>MVC</span><span class="stack-item"><i>AF</i>API-First Architecture</span></div></div>
+            <div class="skill-category"><span class="skill-category-title">Enterprise integrations</span><div class="stack-list"><span class="stack-item"><i>SF</i>Salesforce CRM</span><span class="stack-item"><i>WA</i>WhatsApp APIs</span><span class="stack-item"><i>OTP</i>OTP Services</span><span class="stack-item"><i>3P</i>Third-Party API Integrations</span></div></div>
+            <div class="skill-category"><span class="skill-category-title">Tools & development</span><div class="stack-list"><span class="stack-item"><i>⌘</i>Git</span><span class="stack-item"><i>GH</i>GitHub</span><span class="stack-item"><i>GL</i>GitLab</span><span class="stack-item"><i>PM</i>Postman</span><span class="stack-item"><i>SQ</i>SonarQube</span><span class="stack-item"><i>VS</i>VS Code</span></div></div>
+            <div class="skill-category"><span class="skill-category-title">Testing & quality</span><div class="stack-list"><span class="stack-item"><i>PU</i>PHPUnit</span><span class="stack-item"><i>AT</i>Automated Testing</span><span class="stack-item"><i>SQ</i>SonarQube</span><span class="stack-item"><i>QA</i>Quality Practices</span></div></div>
           </div>
-          <p class="skills-note">Also experienced with Drupal, REST APIs, JWT authentication, OAuth, RBAC, microservices, Docker Compose, CI/CD, Linux, GitHub, GitLab, Postman, and SonarQube.</p>
+          <p class="skills-note">Expert in MVC, OOP, SOLID principles, robust error handling, API versioning, Dockerized development environments, automated testing, and leading cross-functional teams for global clients.</p>
           <a class="dark-link" href="https://github.com/udit-kulkarni98" target="_blank" rel="noreferrer">github.com/udit-kulkarni98 <span class="arrow" aria-hidden="true">↗</span></a>
         </div>
       </div>
@@ -304,43 +264,39 @@
 
     <section class="experience" id="experience" data-section aria-labelledby="experience-title">
       <div class="container">
-        <div class="section-heading experience-heading" data-reveal><div><p class="eyebrow">Experience &amp; education</p><h2 id="experience-title">Building systems that<br />solve real problems.</h2></div><p class="section-intro">A career focused on dependable backend systems, enterprise delivery, and AI-enabled products.</p></div>
-        <div class="experience-grid" data-stagger>
-          <article class="experience-card" data-reveal>
-            <header class="experience-card-heading"><div class="experience-meta"><span>May 2026 – Present</span><span>Publicis Digital Experience (PDX)</span></div><h3>Software Developer</h3><p class="experience-project">Enterprise systems · AI-powered products</p></header>
-            <div class="experience-card-details"><ul><li>Built a modular Laravel CRM and an AI business-intelligence service for governed sales and customer operations.</li><li>Connected Laravel applications to Python services for natural-language analytics, secure SQL execution, and actionable insights.</li><li>Designed multi-tenant controls, RBAC, audit history, dashboards, and performance-focused backend architecture.</li></ul></div>
+        <div data-reveal><p class="eyebrow">Experience & education</p><h2 id="experience-title">Building systems that<br />solve real problems.</h2></div>
+        <div class="experience-grid">
+          <article class="experience-card is-unfolded" data-unfold>
+            <div class="experience-card-heading"><div class="experience-card-heading-copy"><div class="experience-meta"><span>May 2026 – Present</span><span>Publicis Digital Experience (PDX)</span></div><h3>Software Developer</h3><p class="experience-project">HINCOL CRM · Sales Governance Agent</p></div></div>
+            <div class="experience-card-details" aria-hidden="false"><div class="experience-card-details-inner"><ul><li>Built a modular Laravel CRM and an AI business-intelligence service for governed sales and customer operations.</li><li>Connect Laravel applications to Python services for natural-language analytics, secure SQL execution, and actionable insights.</li><li>Design multi-tenant access controls, RBAC, account hierarchies, audit history, and production-ready APIs.</li><li>Deliver intelligent dashboards, reporting workflows, query observability, and performance-focused backend architecture.</li></ul></div></div>
           </article>
-          <article class="experience-card" data-reveal>
-            <header class="experience-card-heading"><div class="experience-meta"><span>Jan 2023 – May 2026</span><span>Publicis Digital Experience (PDX)</span></div><h3>Associate Software Developer</h3><p class="experience-project">Software development &amp; enterprise delivery</p></header>
-            <div class="experience-card-details"><ul><li>Delivered PHP, Laravel, Drupal, and REST API features across international digital programs.</li><li>Improved dealer, lead, CRM, and content workflows through reliable integrations and reusable backend modules.</li><li>Worked with distributed teams and stakeholders to keep delivery clear, predictable, and production-ready.</li></ul></div>
+          <article class="experience-card" data-unfold>
+            <div class="experience-card-heading"><div class="experience-card-heading-copy"><div class="experience-meta"><span>Jan 2023 – May 2026</span><span>Publicis Digital Experience (PDX)</span></div><h3>Associate Software Developer</h3><p class="experience-project">Disney+ Hotstar · Citroën</p></div></div>
+            <div class="experience-card-details" aria-hidden="false"><div class="experience-card-details-inner"><ul><li>Delivered PHP, Laravel, Drupal, and REST API features across international digital programs.</li><li>Improved dealer, lead, CRM, and content workflows through reliable integrations and reusable backend modules.</li><li>Partnered with distributed teams and stakeholders to keep delivery clear, predictable, and production-ready.</li></ul></div></div>
           </article>
-          <article class="experience-card" data-reveal>
-            <header class="experience-card-heading"><div class="experience-meta"><span>Jan 2022 – Jul 2022</span><span>Publicis Media</span></div><h3>Software Developer (Internship)</h3><p class="experience-project">Backend foundations</p></header>
-            <div class="experience-card-details"><ul><li>Contributed to the backend development of an e-commerce platform using PHP.</li><li>Focused on database schema design, modular code logic, and efficient data retrieval.</li><li>Built a foundation in maintainable, high-concurrency application development.</li></ul><a class="experience-certificate" href="https://github.com/udit-kulkarni98/Certificates/blob/main/InternshipCertificate.pdf" target="_blank" rel="noopener noreferrer">View internship certificate <span aria-hidden="true">↗</span></a></div>
+          <article class="experience-card" data-unfold>
+            <div class="experience-card-heading"><div class="experience-card-heading-copy"><div class="experience-meta"><span>Jan 2022 – Jul 2022</span><span>Publicis Media</span></div><h3>Software Developer (Internship)</h3><p class="experience-project">Early career</p></div></div>
+            <div class="experience-card-details" aria-hidden="false"><div class="experience-card-details-inner"><ul><li>Contributed to the backend development of an E-commerce platform using PHP.</li><li>Focused on database schema design, modular code logic, and efficient data retrieval.</li><li>Built a foundation in maintainable, high-concurrency application development.</li></ul><a class="experience-certificate" href="https://github.com/udit-kulkarni98/Certificates/blob/main/InternshipCertificate.pdf" target="_blank" rel="noopener noreferrer">View internship certificate <span aria-hidden="true">↗</span></a></div></div>
           </article>
-          <article class="experience-card" data-reveal>
-            <header class="experience-card-heading"><div class="experience-meta"><span>2017 – 2022</span><span>Mumbai · India</span></div><h3>Academic background</h3><p class="experience-project">Computer applications &amp; computer science</p></header>
-            <div class="experience-card-details"><ul><li>Master’s in Computer Applications at Sardar Patel Institute of Technology (SPIT).</li><li>Bachelor of Science in Computer Science at DG Ruparel College of Arts, Science and Commerce from 2017 to 2020.</li><li>Participated in the Mumbai Avishkar Research Convention 2021 and volunteered for Research Colloquium and ICCICT-2021.</li></ul></div>
+          <article class="experience-card" data-unfold>
+            <div class="experience-card-heading"><div class="experience-card-heading-copy"><div class="experience-meta"><span>2017 – 2022</span><span>Mumbai, India</span></div><h3>Academic background</h3><p class="experience-project">Computer Applications &amp; Computer Science</p></div></div>
+            <div class="experience-card-details" aria-hidden="false"><div class="experience-card-details-inner"><ul><li>Master’s in Computer Applications at Sardar Patel Institute of Technology (SPIT).</li><li>Bachelor of Science in Computer Science at DG Ruparel College of Arts, Science and Commerce from 2017 to 2020.</li><li>Participated in the Mumbai Avishkar Research Convention 2021 and volunteered for Research Colloquium and ICCICT-2021.</li></ul></div></div>
           </article>
         </div>
-      </div>
-    </section>
 
-    <section class="contact-section" id="contact" data-section aria-labelledby="contact-title">
-      <div class="container">
-        <div class="section-heading contact-heading" data-reveal><div><p class="eyebrow">Contact</p><h2 id="contact-title">Have a complex problem<br /><em>worth solving?</em></h2></div><div class="contact-heading-copy"><p>Let’s turn it into something that works.</p><a class="button button--solid" href="mailto:udit.kulkarni98@gmail.com?subject=Portfolio%20enquiry">Let’s build <span class="arrow" aria-hidden="true">→</span></a></div></div>
-        <div class="contact-details" aria-label="Contact details" data-stagger>
+        <div class="contact-details" id="contact" data-section aria-label="Contact details" data-stagger>
           <div class="contact-card" data-reveal><a data-email-link href="mailto:udit.kulkarni98@gmail.com?subject=Portfolio%20enquiry" aria-label="Email Udit Kulkarni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></svg><span><small>Email</small>udit.kulkarni98@gmail.com</span></a><button class="copy-email" type="button" data-copy-email="udit.kulkarni98@gmail.com" aria-label="Copy email address"><span data-copy-status>Copy</span></button></div>
           <a class="contact-card" data-reveal href="https://linkedin.com/in/udit-kulkarni" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.2 3.5a2.15 2.15 0 1 1 0 4.3 2.15 2.15 0 0 1 0-4.3ZM3.4 9h3.6v11.5H3.4V9Zm5.9 0h3.45v1.57h.05c.48-.9 1.65-1.85 3.4-1.85 3.63 0 4.3 2.39 4.3 5.5v6.28h-3.6v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.3V9Z" /></svg><span><small>LinkedIn</small>udit-kulkarni</span></a>
           <a class="contact-card" data-reveal href="https://github.com/udit-kulkarni98" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 7.9c.85 0 1.7.12 2.5.37 1.9-1.29 2.74-1.02 2.74-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg><span><small>GitHub</small>udit-kulkarni98</span></a>
           <a class="contact-card" data-reveal href="./Udit-Kulkarni_Resume.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16" /></svg><span><small>Resume</small>Download PDF</span></a>
-          <div class="contact-card" data-reveal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 21s6-5.35 6-11a6 6 0 1 0-12 0c0 5.65 6 11 6 11Z" /><circle cx="12" cy="10" r="2" /></svg><span><small>Location</small>Mumbai · India</span></div>
+          <div class="contact-card" data-reveal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 21s6-5.35 6-11a6 6 0 1 0-12 0c0 5.65 6 11 6 11Z" /><circle cx="12" cy="10" r="2" /></svg><span><small>Location</small>Mumbai, India</span></div>
           <div class="contact-card" data-reveal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8.5" /><path d="m8 12 2.5 2.5L16.5 9" /></svg><span><small>Availability</small>Open to selected opportunities</span></div>
         </div>
+
         <div class="contact-terminal" data-reveal>
-          <div class="contact-intro"><p class="contact-overline">Direct line</p><h3>Let’s turn it into something <em>that works.</em></h3><p>Open to meaningful opportunities involving enterprise products, backend systems, and AI-powered workflows.</p><a class="contact-button" href="mailto:udit.kulkarni98@gmail.com?subject=Portfolio%20enquiry">Email Udit <span class="arrow" aria-hidden="true">→</span></a></div>
+          <div class="contact-intro"><h3>Let's build something <em>lasting</em> together.</h3><p>Open to meaningful opportunities and interesting PHP, Laravel, systems, and product engineering projects.</p><a class="contact-button js-magnetic" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=udit.kulkarni98@gmail.com&amp;su=Portfolio%20enquiry" target="_blank" rel="noreferrer">Say hello <span class="arrow" aria-hidden="true">→</span></a></div>
           <div class="contact-console" aria-label="Interactive portfolio terminal"><div class="console-line"><span class="prompt">udit@portfolio:~$</span> <span class="command">php artisan help</span></div><div id="console-output" class="console-output" role="log" aria-live="polite"><div class="terminal-result"><span class="terminal-green">Available commands:</span><div class="terminal-command-list"><span class="terminal-help-row"><code>php artisan about</code><span>Professional summary</span></span><span class="terminal-help-row"><code>php artisan skills</code><span>Technical focus areas</span></span><span class="terminal-help-row"><code>php artisan projects</code><span>Selected systems</span></span><span class="terminal-help-row"><code>php artisan experience</code><span>Roles and education</span></span><span class="terminal-help-row"><code>php artisan contact</code><span>Email and location</span></span><span class="terminal-help-row"><code>php artisan resume</code><span>Open resume PDF</span></span><span class="terminal-help-row"><code>php artisan github</code><span>Open GitHub profile</span></span><span class="terminal-help-row"><code>php artisan linkedin</code><span>Open LinkedIn profile</span></span><span class="terminal-help-row"><code>php artisan email</code><span>Compose an email</span></span><span class="terminal-help-row"><code>php artisan clear</code><span>Clear the terminal</span></span><span class="terminal-help-row"><code>php artisan theme</code><span>Cycle light, dark, or auto</span></span><span class="terminal-help-row"><code>php artisan history</code><span>Show command history</span></span></div></div></div><form class="console-input-wrap" id="console-form"><span>›</span>&nbsp;<input class="console-input" id="console-input" name="command" type="text" inputmode="text" enterkeyhint="send" autocapitalize="none" autocorrect="off" aria-label="Terminal command" autocomplete="off" spellcheck="false" placeholder="php artisan help" /><button class="console-submit" type="submit" aria-label="Run artisan command">↵</button></form><div class="console-status" id="console-status" aria-live="polite"></div></div>
-          <div class="contact-examples"><h4>Try it yourself</h4><div class="console-line muted command-note">Every command starts with <code>php artisan</code>.</div><button class="example-command" type="button" data-command="php artisan about"><code>php artisan about</code><span aria-hidden="true">→</span></button><button class="example-command" type="button" data-command="php artisan projects"><code>php artisan projects</code><span aria-hidden="true">→</span></button><button class="example-command" type="button" data-command="php artisan skills"><code>php artisan skills</code><span aria-hidden="true">→</span></button><button class="example-command" type="button" data-command="php artisan contact"><code>php artisan contact</code><span aria-hidden="true">→</span></button></div>
+          <div class="contact-examples"><h4>Try it yourself?</h4><div class="console-line muted command-note">Every command starts with <code>php artisan</code>.</div><button class="example-command" type="button" data-command="php artisan about"><code>php artisan about</code><span aria-hidden="true">→</span></button><button class="example-command" type="button" data-command="php artisan projects"><code>php artisan projects</code><span aria-hidden="true">→</span></button><button class="example-command" type="button" data-command="php artisan skills"><code>php artisan skills</code><span aria-hidden="true">→</span></button><button class="example-command" type="button" data-command="php artisan contact"><code>php artisan contact</code><span aria-hidden="true">→</span></button></div>
         </div>
       </div>
     </section>
