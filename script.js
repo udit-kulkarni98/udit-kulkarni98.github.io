@@ -29,8 +29,7 @@
     terminalHistory: readHistory(),
     historyIndex: -1,
     paletteIndex: 0,
-    scrollTicking: false,
-    pointerTicking: false
+    scrollTicking: false
   };
 
   const themeMeta = $('meta[name="theme-color"]');
@@ -129,63 +128,6 @@
     revealItems.forEach(item => item.classList.add('is-visible'));
   }
 
-  // Experience cards unfold vertically as each paper layer reaches the viewport.
-  const experienceGrid = $('.experience-grid');
-  const experienceCards = $$('[data-unfold]', experienceGrid || document);
-  if (experienceGrid && experienceCards.length) {
-    experienceGrid.classList.add('is-unfolding');
-    const syncExperienceCard = card => {
-      const details = $('.experience-card-details', card);
-      details?.setAttribute('aria-hidden', String(!card.classList.contains('is-unfolded')));
-    };
-    experienceCards.forEach((card, index) => {
-      card.classList.toggle('is-current', index === 0);
-      card.classList.remove('is-settled');
-      syncExperienceCard(card);
-    });
-    const unfoldTriggers = experienceCards.slice(1).map(card => {
-      const trigger = document.createElement('span');
-      trigger.className = 'experience-unfold-trigger';
-      trigger.setAttribute('aria-hidden', 'true');
-      card.hidden = true;
-      experienceGrid.insertBefore(trigger, card);
-      return trigger;
-    });
-    const revealCard = (card, previous, trigger) => {
-      card.hidden = false;
-      previous?.classList.remove('is-current');
-      previous?.classList.add('is-settled');
-      card.classList.remove('is-settled');
-      card.classList.add('is-current');
-      trigger?.classList.add('is-open');
-      window.requestAnimationFrame(() => {
-        card.classList.add('is-unfolded');
-        syncExperienceCard(card);
-      });
-    };
-    if ('IntersectionObserver' in window && !reduceMotionQuery.matches) {
-      let nextIndex = 1;
-      const unfoldObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting || nextIndex >= experienceCards.length) return;
-          unfoldObserver.unobserve(entry.target);
-          revealCard(experienceCards[nextIndex], experienceCards[nextIndex - 1], unfoldTriggers[nextIndex - 1]);
-          nextIndex += 1;
-          if (nextIndex < experienceCards.length) unfoldObserver.observe(unfoldTriggers[nextIndex - 1]);
-        });
-      }, { threshold: .5, rootMargin: '0px 0px -12% 0px' });
-      if (unfoldTriggers[0]) unfoldObserver.observe(unfoldTriggers[0]);
-    } else {
-      unfoldTriggers.forEach(trigger => trigger.remove());
-      experienceCards.forEach(card => {
-        card.hidden = false;
-        card.classList.remove('is-current', 'is-settled');
-        card.classList.add('is-unfolded');
-        syncExperienceCard(card);
-      });
-    }
-  }
-
   // Theme menu.
   const themeControl = $('.theme-control');
   const themeToggle = $('#theme-toggle');
@@ -204,44 +146,6 @@
     closeThemeMenu();
   }));
   document.addEventListener('click', event => { if (!themeControl?.contains(event.target)) closeThemeMenu(); });
-
-  // Hero pointer spotlight and restrained parallax.
-  const hero = $('.hero');
-  const heroVisual = $('.hero-visual');
-  const onPointerMove = event => {
-    if (reduceMotionQuery.matches || state.pointerTicking || !hero) return;
-    state.pointerTicking = true;
-    window.requestAnimationFrame(() => {
-      state.pointerTicking = false;
-      const rect = hero.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      hero.style.setProperty('--spot-x', `${x}px`);
-      hero.style.setProperty('--spot-y', `${y}px`);
-      if (heroVisual && window.innerWidth > 900) {
-        heroVisual.style.transform = `translate3d(${(x / rect.width - .5) * 7}px, ${(y / rect.height - .5) * 5}px, 0)`;
-      }
-    });
-  };
-  hero?.addEventListener('pointermove', onPointerMove, { passive: true });
-  hero?.addEventListener('pointerleave', () => { if (heroVisual) heroVisual.style.transform = ''; }, { passive: true });
-
-  // Button magnetism is opt-in and disabled for touch/reduced-motion.
-  if (!reduceMotionQuery.matches && window.matchMedia('(pointer: fine)').matches) {
-    $$('.js-magnetic').forEach(button => {
-      button.addEventListener('pointermove', event => {
-        const rect = button.getBoundingClientRect();
-        const x = ((event.clientX - rect.left) / rect.width - .5) * 5;
-        const y = ((event.clientY - rect.top) / rect.height - .5) * 4;
-        button.style.setProperty('--mag-x', `${x}px`);
-        button.style.setProperty('--mag-y', `${y}px`);
-      });
-      button.addEventListener('pointerleave', () => {
-        button.style.setProperty('--mag-x', '0px');
-        button.style.setProperty('--mag-y', '0px');
-      });
-    });
-  }
 
   const currentYear = new Date().getFullYear();
   $$('[data-current-year]').forEach(element => { element.textContent = currentYear; });
@@ -554,10 +458,6 @@
   $$('[data-project-open]').forEach(button => button.addEventListener('click', event => {
     event.stopPropagation();
     openProjectModal(button.dataset.projectOpen);
-  }));
-  $$('.project-card').forEach(card => card.addEventListener('click', event => {
-    if (event.target.closest('button, a')) return;
-    openProjectModal(card.querySelector('[data-project-open]')?.dataset.projectOpen);
   }));
   $$('[data-modal-close]').forEach(button => button.addEventListener('click', () => projectModal?.close()));
   projectModal?.addEventListener('click', event => {
