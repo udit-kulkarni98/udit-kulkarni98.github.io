@@ -419,6 +419,53 @@
       ],
       tags: ['Laravel 11', 'PHP 8.2', 'MySQL', 'JWT', 'REST APIs', 'SAP APIs', 'Redis', 'Docker', 'AWS S3', 'Swagger/OpenAPI']
     },
+    'hincolbot': {
+      title: 'HincolBot – Enterprise Conversational Voice AI',
+      summary: 'A full-duplex speech-to-speech AI platform that lets field sales managers create opportunities, generate RFQs, track indents, and log meetings through natural spoken dialogue in English, Hinglish, and regional vernaculars — eliminating tedious CRM and ERP data entry.',
+      sections: [
+        {
+          title: 'The challenge',
+          details: [
+            'Field engineers working on remote highway projects struggled with complex, multi-field ERP forms, leading to delayed deal registrations and inconsistent CRM hygiene.',
+            'Traditional voice bots relied on rigid turn-based pipelines (STT → LLM → TTS) that suffered from high latency (3–6 seconds), robotic pacing, frequent hallucinations, and vulnerability to accidental record deletion.'
+          ]
+        },
+        {
+          title: 'Full-duplex speech-to-speech streaming',
+          details: [
+            'Implemented OpenAI\'s GPT-Live-1 model hosted on Azure AI Foundry via a resilient, authenticated FastAPI WebSocket proxy with sub-200ms response latency.',
+            'Streamed raw 24kHz PCM16 audio bidirectionally using the browser\'s Web Audio API, enabling natural turn-taking, pauses, and instant speech interruption (barge-in).'
+          ]
+        },
+        {
+          title: 'Deterministic agentic orchestration with LangGraph',
+          details: [
+            'Designed an in-memory LangGraph StateGraph handling multi-turn conversational memory, multi-step slot filling, and intent classification without fragile regex or keyword matching.'
+          ]
+        },
+        {
+          title: 'Semantic entity disambiguation (Qdrant vector search)',
+          details: [
+            'Built an automated dense vector retrieval pipeline using Qdrant to resolve spoken, phonetically varied Indian contractor names (e.g., Dilip Buildcon, L&T, IRB), bitumen grades (VG-30, RS-1, PMB), and geographic locations to canonical database IDs with greater than 98% accuracy.'
+          ]
+        },
+        {
+          title: 'Human-in-the-loop governance and security guardrails',
+          details: [
+            'Implemented a zero-delete policy with a hard-coded guardrail blocking any accidental or adversarial attempt to delete business records.',
+            'Built interactive HITL confirmation cards that halt database mutations before execution, rendering a live verification card with inline editing and voice-controlled confirmation.',
+            'Integrated multi-tenant RBAC and geographic scoping with the Laravel backend to enforce role-based permissions and territorial zone boundaries.'
+          ]
+        },
+        {
+          title: 'Observability and continuous evaluation',
+          details: [
+            'Integrated LangSmith and automated profiling for real-time tracking of latency percentiles (p50, p90, p99), token usage, and automated benchmark evaluation suites.'
+          ]
+        }
+      ],
+      tags: ['Python', 'FastAPI', 'GPT-Live-1', 'Azure AI Foundry', 'LangGraph', 'Qdrant', 'WebSocket', 'Web Audio API', 'LangSmith']
+    },
     'sales-governance': {
       title: 'Sales Governance Agent',
       summary: 'An AI-powered business intelligence service that turns natural-language questions into governed insights, dashboards, and strategic recommendations.',

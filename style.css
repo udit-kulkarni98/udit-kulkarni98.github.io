@@ -213,6 +213,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
 .project-image--disney { background: #080b1b; }
 .project-image--citroen { background: #f8f8f8; }
 .project-image--hinduja { background: #eef0ee; }
+.project-image--hincolbot { background: #f5f3ef; }
 .project-cover-image { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 480ms var(--ease-premium), filter 480ms var(--ease-premium); }
 .project-image--hincol .project-cover-image { object-fit: contain; padding: 12px; }
 .project-image--sales .project-cover-image { object-fit: contain; padding: 8px; }
