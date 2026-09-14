@@ -700,7 +700,7 @@
         writeTerminal('Laravel · PHP · Drupal · Python · FastAPI · Azure OpenAI · LangChain · LangGraph · MySQL · Redis · Docker');
         break;
       case 'projects':
-        writeTerminal('HINCOL CRM · Sales Governance Agent · Citroën · Hinduja Hospital AI Assistant · Disney+ Hotstar');
+        writeTerminal('HINCOL CRM · Sales Governance Agent · HincolBot · Citroën · Hinduja Hospital AI Assistant · Disney+ Hotstar');
         break;
       case 'experience':
         writeTerminal('Publicis Digital Experience (PDX) — Software Developer, May 2026 to Present · Associate Software Developer, Jan 2023 to May 2026 · Publicis Media — Software Developer (Internship), Jan 2022 to Jul 2022');
