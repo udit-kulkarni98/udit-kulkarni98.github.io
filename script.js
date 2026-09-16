@@ -399,8 +399,8 @@
   const projectModalTags = $('#project-modal-tags');
   const projectDetails = {
     'hincol-crm': {
-      title: 'HINCOL – Enterprise AI, CRM & Sales Platform',
-      summary: 'A 77+ module modular Laravel enterprise platform spanning lead scoring, KAM classification, indents, credit governance, SAP integrations, and commercial analytics across 5 national zones.',
+      title: 'HINCOL — Sales & Operations Platform',
+      summary: 'A 77+ module modular Laravel enterprise platform spanning lead scoring, KAM classification, indents, credit governance, and SAP integrations across 5 national zones.',
       award: {
         name: 'Wow@Work',
         title: 'Collective Impact Award',
@@ -410,162 +410,145 @@
       },
       sections: [
         {
-          title: 'Platform architecture & SAP integration',
-          details: [
-            'Built a modular-monolith Laravel enterprise platform with 77+ business modules spanning leads, opportunities, RFQs, indents, and credit governance.',
-            'Integrated SAP APIs for real-time synchronization of pricing, inventory, sales orders, bank guarantees, and statements of account.',
-            'Implemented RESTful APIs using Laravel 11, PHP 8.2, MySQL, JWT authentication, and multi-tenant organization-based access control.',
-            'Enforced zone-level data scoping across 5 national zones, role-based access control (RBAC), and full audit logging.'
-          ]
-        },
-        {
           title: 'Lead scoring & qualification engine',
           details: [
-            'Built a multi-criteria weighted Lead Scoring & Qualification engine in Laravel using project type, volume, product specifications, margin, and urgency, processing 800–1,500 enterprise leads/opportunities per month across 5 national zones.',
-            'Reduced lead qualification from ~15 minutes to <1 second and routing from 24–48 hours to real time, saving an estimated 60–80 hours/month of sales and leadership effort and reducing administrative vetting overhead by ~35%.'
+            'Created a multi-criteria Lead Scoring & Qualification engine in Laravel using project type, volume, product specifications, margin and urgency, processing 800–1,500 enterprise leads/opportunities per month across 5 national zones.',
+            'Cut lead qualification from ~15 minutes to <1 second and routing from 24–48 hours to real time, saving an estimated 60–80 hours/month of sales and leadership effort and reducing administrative vetting overhead by ~35%.'
           ]
         },
         {
-          title: 'Key Account Management (KAM) classification',
+          title: 'KAM classification & approval state machine',
           details: [
-            'Architected a Key Account Management (KAM) classification engine for ~2,000–2,500 active accounts, replacing quarterly spreadsheet-driven reviews with event-driven evaluation, queued batch re-evaluation, and a multi-stage approval state machine with AWS S3 audit attachments.'
+            'Designed a Key Account Management (KAM) classification engine for ~2,000–2,500 active accounts, replacing quarterly spreadsheet reviews with event-driven and queued batch re-evaluation, plus a multi-stage approval state machine with AWS S3 audit attachments.'
           ]
         },
         {
-          title: 'Cross-sell matrix & calendar synchronization',
+          title: 'Whitespace deficit matrix & calendar sync',
           details: [
-            'Engineered a Product Penetration & Cross-Sell matrix engine to calculate customer whitespace deficits from sales orders, enabling sales teams to identify product-category gaps across customer accounts.',
-            'Integrated Microsoft Graph API for automated Outlook seminar calendar synchronization.'
+            'Added a Product Penetration & Cross-Sell matrix engine to calculate customer whitespace deficits from sales orders, enabling sales teams to identify product-category gaps across customer accounts.',
+            'Connected Microsoft Graph API to automate Outlook seminar calendar synchronization.'
           ]
         },
         {
-          title: 'Commercial governance & costing',
+          title: 'Modular monolith & SAP integrations',
           details: [
-            'Developed the complete RFQ and quotation lifecycle, multi-product quotations, revisions, approvals, customer responses, PDF proposal generation, and audit history.',
-            'Built indent order management with RFQ-based order creation, bulk orders, automatic discount calculations, and delivery tracking.',
-            'Implemented location-based costing to compare plant pricing, shipping rates, distance, and product category to identify cost-efficient supply plants.'
+            'Worked on a 77+ module Laravel platform spanning leads, opportunities, RFQs, indents and credit governance, with SAP integrations for pricing, inventory, sales orders, bank guarantees and statements.'
           ]
         }
       ],
-      tags: ['Laravel 11', 'PHP 8.2', 'MySQL', 'SAP APIs', 'Microsoft Graph API', 'Redis', 'AWS S3', 'State Machines', 'JWT', 'REST APIs']
+      tags: ['Laravel', 'PHP', 'MySQL', 'SAP APIs', 'Microsoft Graph API', 'Redis', 'AWS S3', 'State Machines', 'REST APIs']
     },
     'hincolbot': {
-      title: 'HincolBot – Full-Duplex Conversational Voice AI',
-      summary: 'A full-duplex conversational voice platform built with FastAPI, WebSockets, and Azure AI Foundry, streaming 24kHz PCM16 audio at <200ms latency to automate enterprise CRM and ERP operations via natural spoken dialogue.',
+      title: 'Hincol – Voice Assistant AI',
+      summary: 'A full-duplex voice application using FastAPI, WebSockets, and Azure AI Foundry, streaming 24kHz PCM16 audio at <200ms latency to reduce ERP/CRM data-entry time by 80%.',
       sections: [
         {
-          title: 'The challenge',
+          title: 'Full-duplex voice architecture',
           details: [
-            'Field engineers working on remote highway projects struggled with complex, multi-field ERP forms, leading to delayed deal registrations and inconsistent CRM hygiene.',
-            'Traditional voice bots relied on rigid turn-based pipelines (STT → LLM → TTS) that suffered from high latency (3–6s), robotic pacing, frequent hallucinations, and vulnerability to accidental record deletion.'
+            'Architected and built HincolBot, a full-duplex voice application using FastAPI, WebSockets and Azure AI Foundry, reducing ERP/CRM data-entry time by 80% across 5 national operating zones, from 10–15 minutes to <2 minutes per opportunity.'
           ]
         },
         {
-          title: 'Full-duplex speech-to-speech streaming',
+          title: 'Real-time 24kHz PCM16 audio streaming',
           details: [
-            'Built a full-duplex conversational voice platform with FastAPI, WebSockets, and Azure AI Foundry, streaming 24kHz PCM16 audio at <200ms latency.',
-            'Enabled natural turn-taking, pauses, Redis conversational memory, persistent session summaries, and instant speech interruption (barge-in).'
-          ]
-        },
-        {
-          title: 'Deterministic agentic orchestration with LangGraph',
-          details: [
-            'Architected a LangGraph StateGraph for multi-turn context, intent classification, slot filling, and deterministic separation of conversational reasoning from business-operation execution.'
-          ]
-        },
-        {
-          title: 'Phonetic entity disambiguation (Qdrant)',
-          details: [
-            'Engineered Qdrant-based phonetic entity disambiguation across 4,628 master entity vectors, resolving contractor/customer, product, location, and project entities with 98.4% accuracy across 500 enterprise conversational test cases; fused semantic and lexical candidates before LLM selection.'
-          ]
-        },
-        {
-          title: 'Human-in-the-loop security guardrails',
-          details: [
-            'Implemented HITL security guardrails including zero-delete policies, mutation verification, multi-tenant RBAC, and geographic zone scoping.'
+            'Implemented bidirectional 24kHz PCM16 speech streaming over authenticated WebSockets using GPT-Live-1 and browser Web Audio APIs, achieving <200ms audio response latency with real-time barge-in, interruption handling, Redis conversational memory and persistent session summaries.'
           ]
         }
       ],
-      tags: ['Python 3.11', 'FastAPI', 'Azure AI Foundry', 'LangGraph', 'Qdrant', 'WebSockets', 'PCM16 Audio', 'Redis']
+      tags: ['FastAPI', 'WebSockets', 'Azure AI Foundry', 'GPT-Live-1', 'PCM16 Audio', 'Web Audio APIs', 'Redis', 'Python']
     },
     'sales-governance': {
-      title: 'Sales Governance Agent – Governed Text-to-SQL & BI',
-      summary: 'A governed natural-language intelligence layer with vector-based schema discovery, read-only MySQL validation, sensitive-column masking, real-time SSE streaming, and LangSmith observability.',
-      details: [
-        'Developed a FastAPI microservice integrated with LangChain and LangGraph for intelligent query orchestration.',
-        'Developed governed Text-to-SQL with vector-based schema discovery, read-only MySQL validation, sensitive-column masking, and real-time SSE streaming.',
-        'Integrated Qdrant vector search for semantic schema discovery, entity matching, and database relationship identification.',
-        'Implemented asynchronous Redis workflows and LangSmith observability for latency percentiles (p50, p90, p99), token usage, tracing, and continuous AI evaluation.',
-        'Enforced role-, organization-, and zone-based access using authenticated user context supplied by the Laravel backend.',
-        'Implemented conversational memory and follow-up query handling with Redis and LangGraph checkpoints.',
-        'Added report exports in CSV, Excel, and Word formats alongside executive dashboards, KPI summaries, and strategic recommendations.'
+      title: 'Strategic Sales Agent',
+      summary: 'A deterministic LangGraph agentic system physically separating conversational reasoning from database execution, with hybrid entity disambiguation (98.4% accuracy), read-only Text-to-SQL, and HITL safeguards.',
+      sections: [
+        {
+          title: 'LangGraph conversational reasoning',
+          details: [
+            'Used a LangGraph StateGraph to manage multi-turn context, intent classification and dynamic slot filling, physically separating conversational reasoning from database execution and pausing for confirmation before mutations.'
+          ]
+        },
+        {
+          title: 'Hybrid entity disambiguation (98.4% accuracy)',
+          details: [
+            'Built hybrid entity disambiguation across 4,628 master vectors spanning ~2,500 contractors/customers, ~1,500 locations, 20 product grades and 619 highway projects; fused Qdrant dense retrieval with lexical SQL search to achieve 98.4% accuracy across 500 conversational test cases.'
+          ]
+        },
+        {
+          title: 'Governed Text-to-SQL & observability',
+          details: [
+            'Wrote a read-only Text-to-SQL service with vector schema discovery, read-only MySQL validation, sensitive-column masking and SSE streaming; added asynchronous Redis workflows and LangSmith observability for p50/p90/p99 latency, token usage, tracing and continuous AI evaluation.'
+          ]
+        },
+        {
+          title: 'HITL security safeguards',
+          details: [
+            'Added HITL safeguards: multilingual Zero-Delete protection, prompt-injection defenses, PII/schema validation and zone-scoped RBAC across 5 operating regions, requiring explicit confirmation before ACID database mutations.'
+          ]
+        }
       ],
-      tags: ['Python', 'FastAPI', 'LangGraph', 'LangChain', 'Azure OpenAI', 'Qdrant', 'Text-to-SQL', 'LangSmith', 'Redis', 'MySQL']
+      tags: ['LangGraph', 'Python', 'FastAPI', 'Qdrant', 'Text-to-SQL', 'LangSmith', 'MySQL', 'Redis', 'HITL Safeguards']
     },
     'disney-plus': {
-      title: 'Disney+ Hotstar – Campaign CMS & Delivery Management',
-      summary: 'Engineered a custom campaign CMS for drafting emailers and an in-house project management tool for delivery tracking, invoicing, and pending payments across global markets.',
-      details: [
-        'Engineered a custom Disney+ Hotstar campaign CMS for drafting emailers and an in-house project-management tool for delivery tracking, invoicing, and pending-payment management.',
-        'Coordinated email campaign delivery for 4 international client markets across the United States, United Kingdom, and MENA regions.',
-        'Gained extensive experience in client interaction, stakeholder management, cross-functional delivery coordination, and high-quality production standards.'
+      title: 'Disney+ Hotstar — Campaign CMS & Delivery',
+      summary: 'Campaign CMS for drafting emailers and an in-house project-management tool for delivery tracking, invoicing, and pending payments.',
+      sections: [
+        {
+          title: 'Campaign CMS & project delivery',
+          details: [
+            'Created a Disney+ Hotstar campaign CMS for drafting emailers and an in-house project-management tool for delivery tracking, invoicing and pending-payment management.',
+            'Coordinated email campaign delivery and asset distribution for 4 international client markets across the US, UK, and MENA regions.'
+          ]
+        }
       ],
-      tags: ['PHP', 'Laravel', 'Drupal', 'Campaign CMS', 'Project Delivery', 'REST APIs', 'Docker']
+      tags: ['PHP', 'Laravel', 'Campaign CMS', 'Project Delivery', 'REST APIs']
     },
     citroen: {
-      title: 'Citroën – Enterprise Platform & Dealer Locator REST API',
-      summary: 'High-concurrency backend platform and Dealer Locator REST API for Citroën India, serving 1.5M+ monthly visitors with 50+ RPS peak traffic across 1,000+ dealer locations.',
+      title: 'Citroën — Dealer Locator REST API & Platform',
+      summary: 'High-concurrency Dealer Locator REST API and vehicle data ingestion platform for Citroën India, serving 1.5M+ monthly visitors with 50+ RPS peak traffic.',
       sections: [
         {
-          title: 'Dealer Locator & geo-spatial matching',
+          title: 'Dealer Locator REST API & geo-spatial matching',
           details: [
-            'Architected and delivered the Citroën Dealer Locator REST API, aggregating real-time Stellantis/PSA global APIs, Citroën Advisor reviews, and localized databases.',
-            'Supported a high-traffic platform serving 1.5M+ monthly visitors with 50+ RPS peak traffic during national campaigns.',
-            'Engineered low-latency geo-spatial dealer matching with real-time Haversine distance calculations, achieving <350ms typical response latency.',
-            'Deployed scalable containerized architecture using Docker, AWS ECS/ECR, S3, CloudFront, and Redis.'
+            'Built the Citroën Dealer Locator REST API, aggregating real-time Stellantis/PSA global APIs, Citroën Advisor reviews and localized databases; supported a platform serving 1.5M+ monthly visitors with 50+ RPS peak traffic during national campaigns.',
+            'Implemented geo-spatial dealer matching with real-time Haversine distance calculations, achieving <350ms typical response latency; deployed scalable containerized architecture using Docker, AWS ECS/ECR, S3, CloudFront and Redis.'
           ]
         },
         {
-          title: 'Digital platform & integrations',
+          title: '12+ REST API modules & integrations',
           details: [
-            'Developed 12+ REST API modules for the Citroën India digital platform using Drupal and PHP, including automated vehicle-data ingestion and synchronization across 1,000+ dealer locations.',
-            'Integrated OTP verification, WhatsApp messaging, and OpenID/OAuth authentication with third-party platforms.',
-            'Collaborated in a 3-member team to deliver the limited-edition Team Dhoni Microsite, receiving appreciation from the project manager.',
-            'Improved page-load performance by 25% through server-side caching and media-asset optimization.'
+            'Delivered 12+ REST API modules for the Citroën India digital platform using Drupal and PHP, including automated vehicle-data ingestion and synchronization across 1,000+ dealer locations.',
+            'Connected OTP verification, WhatsApp messaging and OpenID/OAuth authentication with third-party platforms, and improved page-load performance by 25% through server-side caching and media-asset optimization.'
           ]
         }
       ],
-      tags: ['PHP', 'Drupal', 'Symfony', 'Docker', 'AWS ECS/ECR', 'AWS S3', 'CloudFront', 'Redis', 'Haversine', 'REST APIs']
+      tags: ['Drupal', 'PHP', 'Docker', 'AWS ECS/ECR', 'AWS S3', 'CloudFront', 'Redis', 'Haversine', 'REST APIs']
     },
     'hinduja-ai': {
-      title: 'Hinduja Hospital – Healthcare RAG & Conversational AI',
-      summary: 'Enterprise Healthcare RAG agent integrating 260+ doctors, 90 specialties, and 2 hospital units for symptom triage, doctor discovery, real-time OPD booking, and BillDesk payment processing.',
+      title: 'Hinduja Hospital — Healthcare RAG & Conversational AI',
+      summary: 'Clinical Healthcare RAG and voice assistant for P.D. Hinduja Hospital (Mahim & Khar), integrating 260+ doctors, 90 specialties, hybrid search, and BillDesk payment processing.',
       sections: [
         {
-          title: 'Healthcare RAG & clinical hybrid search',
+          title: 'Healthcare RAG & hybrid clinical search',
           details: [
-            'Architected an enterprise Healthcare RAG & Conversational AI Agent using Python 3.11, FastAPI, Qdrant, and LangChain for P.D. Hinduja Hospital (Mahim & Khar units).',
-            'Integrated 260+ doctors, 90 specialties, and 2 hospital units for symptom triage, doctor discovery, and real-time OPD booking.',
-            'Engineered a two-stage Hybrid Search pipeline over 3,096 clinical chunks, combining dense retrieval and BM25 to maximize recall across symptom language and exact medical entities, followed by BAAI/bge-reranker-base cross-encoder reranking for precision and clinical grounding.',
-            'Designed query-adaptive retrieval weighting (70/30 dense-sparse) for symptom versus doctor/department queries, reducing a ~30-candidate pool to 6–12 grounded chunks through reranking, threshold gating, and token-budget allocation.'
+            'Built a Healthcare RAG & voice assistant using Python 3.11, FastAPI, Qdrant and LangChain for P.D. Hinduja Hospital (Mahim & Khar), integrating 260+ doctors, 90 specialties and 2 hospital units for symptom triage, doctor discovery and real-time OPD booking.',
+            'Combined dense retrieval and BM25 across 3,096 clinical chunks to maximize recall across symptom language and exact medical entities, followed by BAAI/bge-reranker-base cross-encoder reranking for precision and clinical grounding.',
+            'Tuned retrieval weights (70/30 dense-sparse) for symptom versus doctor/department queries, reducing a ~30-candidate pool to 6–12 grounded chunks through reranking, threshold gating and token-budget allocation.'
           ]
         },
         {
-          title: 'State machine & HIS integration',
+          title: 'Multi-turn state machine & BillDesk integration',
           details: [
-            'Built an asynchronous multi-turn state machine and HIS integration layer supporting live slot discovery, SMS OTP authentication, BillDesk payment processing using JWS HMAC-SHA256, and automated hospital voucher generation.',
-            'Validated same-slot contention with 250 simultaneous booking attempts to ensure robust concurrency and zero race conditions.'
+            'Added an asynchronous multi-turn state machine and HIS integration layer supporting live slot discovery, SMS OTP authentication, BillDesk payment processing using JWS HMAC-SHA256 and automated hospital voucher generation; validated same-slot contention with 250 simultaneous booking attempts.'
           ]
         },
         {
-          title: 'Automated test validation',
+          title: 'Automated clinical & functional regression',
           details: [
-            'Validated the platform through a 320+ automated PyTest/PHPUnit test suite, achieving 96.6% pass rate for Mahim and 86.9% for Khar in automated clinical and functional regression tests.',
-            'End-to-end booking flows completed in ~45–60 seconds in interactive testing.'
+            'Ran a 320+ PyTest/PHPUnit regression suite, achieving 96.6% pass rate for Mahim and 86.9% for Khar in automated clinical and functional regression tests; end-to-end booking flows completed in ~45–60 seconds in interactive testing.'
           ]
         }
       ],
-      tags: ['Python 3.11', 'FastAPI', 'Qdrant', 'LangChain', 'BM25', 'BAAI/bge-reranker-base', 'Hybrid Search', 'BillDesk JWS', 'PyTest', 'PHPUnit']
+      tags: ['Python 3.11', 'FastAPI', 'Qdrant', 'LangChain', 'BM25', 'bge-reranker-base', 'BillDesk JWS', 'PyTest', 'PHPUnit']
     }
   };
   let projectModalReturnFocus = null;
@@ -736,16 +719,16 @@
         writeTerminal(`<span class="terminal-green">Available commands:</span><div class="terminal-command-list">${terminalCommands.map(item => `<span class="terminal-help-row"><code>${fullCommand(item)}</code><span>${commandDescriptions[item]}</span></span>`).join('')}</div>`);
         break;
       case 'about':
-        writeTerminal('Software Engineer and AI Systems Architect at Publicis Digital Experience, specializing in production AI, backend architecture, enterprise automation, and performance optimization across Laravel/PHP and Python/FastAPI.');
+        writeTerminal('Software Engineer with a Master’s in Computer Applications (Machine Learning), working across Laravel/PHP and Python/FastAPI. Experience building backend systems, RAG and voice applications, Text-to-SQL services, CRM/ERP platforms, high-concurrency APIs, and third-party integrations.');
         break;
       case 'skills':
-        writeTerminal('Laravel · PHP · Drupal · Python · FastAPI · Azure OpenAI · LangChain · LangGraph · MySQL · Redis · Docker');
+        writeTerminal('Backend: PHP, Laravel, Python, FastAPI, Magento 2, Drupal, Symfony, WebSockets · Frontend: JavaScript, ReactJS, HTML/CSS, Tailwind CSS · Data, Cloud &amp; DevOps: SQL, MySQL, SQLite, Redis, AWS, Docker, Linux, Nginx, GitHub/GitLab CI, Jenkins');
         break;
       case 'projects':
-        writeTerminal('HINCOL CRM Platform · Sales Governance Agent · HincolBot · Citroën · Hinduja Hospital AI · Disney+ Hotstar');
+        writeTerminal('HINCOL Sales &amp; Operations Platform · Hincol — Voice Assistant AI · Strategic Sales Agent · Hinduja Hospital — Healthcare RAG · Citroën Dealer Locator REST API · Disney+ Hotstar Campaign CMS');
         break;
       case 'experience':
-        writeTerminal('Publicis Digital Experience (PDX) — Software Developer, Jan 2025 to Present · Razorfish — Software Developer &amp; Delivery, Jan 2023 to Dec 2024 · Publicis Media — Software Developer (Internship), Jan 2022 to Jul 2022');
+        writeTerminal('Publicis Digital Experience (Jan 2025 – Present): Software Developer (HINCOL &amp; Hinduja Hospital) · Razorfish (Jan 2023 – Dec 2024): Software Developer &amp; Delivery (Disney+ Hotstar &amp; Citroën) · Publicis Media (Jan 2022 – Jul 2022): Software Developer &amp; Project Management Intern (Magento 2, PWA Studio, GraphQL)');
         break;
       case 'contact':
         writeTerminal('Mumbai, India · <a class="terminal-link" href="mailto:udit.kulkarni98@gmail.com">udit.kulkarni98@gmail.com</a> · 9892955429');
