@@ -381,6 +381,10 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
 .timeline-edu-period { color: var(--red-dark); font: 9px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
 .timeline-edu-degree { margin: 6px 0 4px; color: var(--ink); font: 500 13px/1.3 var(--sans); }
 .timeline-edu-school { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.timeline-edu-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 10px; padding-top: 8px; border-top: 1px solid color-mix(in srgb, var(--line) 60%, transparent); }
+.timeline-edu-score { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 4px; color: var(--red-dark); background: color-mix(in srgb, var(--red) 12%, transparent); font: 600 10px/1.3 var(--mono); letter-spacing: .02em; }
+.timeline-edu-link { color: var(--muted); font: 10px var(--mono); text-decoration: none; transition: color var(--duration-ui) ease; }
+.timeline-edu-link:hover { color: var(--red); }
 
 /* Contact terminal */
 .contact-terminal { display: grid; grid-template-columns: .86fr 1.15fr .78fr; min-height: 270px; overflow: hidden; border: 1px solid #33343b; border-radius: var(--radius-card); color: #eae8e3; background: #1b1c21; box-shadow: var(--shadow-md); }

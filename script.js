@@ -713,7 +713,7 @@
         writeTerminal('HINCOL Sales &amp; Operations Platform · Hincol — Voice Assistant AI · Strategic Sales Agent · Hinduja Hospital — Healthcare RAG · Citroën Dealer Locator REST API · Disney+ Hotstar Campaign CMS');
         break;
       case 'experience':
-        writeTerminal('Publicis Digital Experience (Jan 2025 – Present): Software Developer (HINCOL &amp; Hinduja Hospital) · Razorfish (Jan 2023 – Dec 2024): Software Developer &amp; Delivery (Disney+ Hotstar &amp; Citroën) · Publicis Media (Jan 2022 – Jul 2022): Software Developer &amp; Project Management Intern (Magento 2, PWA Studio, GraphQL)');
+        writeTerminal('Publicis Digital Experience (Jan 2025 – Present): Software Developer (HINCOL &amp; Hinduja Hospital) · Razorfish (Jan 2023 – Dec 2024): Software Developer &amp; Delivery (Disney+ Hotstar &amp; Citroën) · Publicis Media (Jan 2022 – Jul 2022): Software Developer &amp; Project Management Intern (Magento 2, PWA Studio, GraphQL) · Education: MCA (Machine Learning) SPIT Mumbai (8.65 / 10 CGPI) &amp; B.Sc. Computer Science DG Ruparel College (7.91 / 10 CGPI)');
         break;
       case 'contact':
         writeTerminal('Mumbai, India · <a class="terminal-link" href="mailto:udit.kulkarni98@gmail.com">udit.kulkarni98@gmail.com</a> · 9892955429');
