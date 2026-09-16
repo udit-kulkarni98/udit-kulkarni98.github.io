@@ -480,20 +480,13 @@
           ]
         },
         {
-          title: 'Governed Text-to-SQL & observability',
-          details: [
-            'Developed governed Text-to-SQL with vector-based schema discovery, read-only MySQL validation, sensitive-column masking, and real-time SSE streaming.',
-            'Implemented asynchronous Redis workflows and LangSmith observability for latency percentiles (p50, p90, p99), token usage, tracing, and continuous AI evaluation.'
-          ]
-        },
-        {
           title: 'Human-in-the-loop security guardrails',
           details: [
             'Implemented HITL security guardrails including zero-delete policies, mutation verification, multi-tenant RBAC, and geographic zone scoping.'
           ]
         }
       ],
-      tags: ['Python 3.11', 'FastAPI', 'Azure AI Foundry', 'LangGraph', 'Qdrant', 'WebSockets', 'Text-to-SQL', 'LangSmith', 'Redis']
+      tags: ['Python 3.11', 'FastAPI', 'Azure AI Foundry', 'LangGraph', 'Qdrant', 'WebSockets', 'PCM16 Audio', 'Redis']
     },
     'sales-governance': {
       title: 'Sales Governance Agent – Governed Text-to-SQL & BI',
