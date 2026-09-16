@@ -347,7 +347,7 @@
     link.setAttribute('rel', 'noreferrer');
   });
 
-  // Resume download engine with dynamic date timestamp
+  // Resume download engine with dynamic date timestamp and cache busting
   const getResumeFilename = () => {
     const now = new Date();
     const year = now.getFullYear();
@@ -356,36 +356,21 @@
     return `Udit_Kulkarni_Resume_${year}-${month}-${day}.pdf`;
   };
 
-  const downloadResumePdf = async event => {
-    if (event?.preventDefault) event.preventDefault();
+  const syncResumeLinks = () => {
     const filename = getResumeFilename();
-    try {
-      const response = await fetch('./Udit-Kulkarni_Resume.pdf');
-      if (!response.ok) throw new Error('Failed to fetch resume');
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = filename;
-      document.body.append(link);
-      link.click();
-      link.remove();
-      window.setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
-    } catch {
-      const link = document.createElement('a');
-      link.href = './Udit-Kulkarni_Resume.pdf';
-      link.download = filename;
-      document.body.append(link);
-      link.click();
-      link.remove();
-    }
+    const freshUrl = `./Udit-Kulkarni_Resume.pdf?v=${Date.now()}`;
+    $$('[data-resume-download], a[href*="Resume.pdf"]').forEach(link => {
+      link.setAttribute('download', filename);
+      link.setAttribute('href', freshUrl);
+    });
   };
 
   const initResumeDownloadLinks = () => {
-    const filename = getResumeFilename();
+    syncResumeLinks();
     $$('[data-resume-download], a[href*="Resume.pdf"]').forEach(link => {
-      link.setAttribute('download', filename);
-      link.addEventListener('click', downloadResumePdf);
+      link.addEventListener('pointerenter', syncResumeLinks);
+      link.addEventListener('focus', syncResumeLinks);
+      link.addEventListener('pointerdown', syncResumeLinks);
     });
   };
   initResumeDownloadLinks();
@@ -735,8 +720,14 @@
         break;
       case 'resume': {
         const filename = getResumeFilename();
-        writeTerminal(`Downloading <a class="terminal-link" href="./Udit-Kulkarni_Resume.pdf" download="${filename}">${escapeHTML(filename)}</a>…`);
-        downloadResumePdf();
+        const url = `./Udit-Kulkarni_Resume.pdf?v=${Date.now()}`;
+        writeTerminal(`Downloading <a class="terminal-link" href="${url}" download="${filename}">${escapeHTML(filename)}</a>…`);
+        const tempLink = document.createElement('a');
+        tempLink.href = url;
+        tempLink.download = filename;
+        document.body.append(tempLink);
+        tempLink.click();
+        tempLink.remove();
         break;
       }
       case 'github':
