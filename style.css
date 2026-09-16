@@ -363,6 +363,25 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
 .experience-certificate { display: inline-flex; align-items: center; gap: 8px; margin-top: 17px; color: var(--red-dark); font: 10px var(--mono); }
 .experience-certificate:hover { color: var(--red); }
 
+/* Career Timeline styling */
+.timeline-scope { margin: 0 0 14px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+.timeline-projects-wrap { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed color-mix(in srgb, var(--line) 80%, transparent); }
+.timeline-projects-label { color: var(--faint); font: 9px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.timeline-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.timeline-chip { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; padding: 7px 13px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--paper-raised) 92%, var(--ink)); color: var(--ink); font-family: var(--sans); font-size: 11px; font-weight: 500; text-decoration: none; cursor: pointer; transition: border-color var(--duration-ui) ease, background-color var(--duration-ui) ease, transform var(--duration-ui) var(--ease-premium), box-shadow var(--duration-ui) ease; }
+.timeline-chip span { font-weight: 600; }
+.timeline-chip small { color: var(--muted); font-size: 10px; font-weight: 400; }
+.timeline-chip .arrow { color: var(--faint); font-size: 11px; transition: transform var(--duration-ui) ease, color var(--duration-ui) ease; }
+.timeline-chip:hover { border-color: color-mix(in srgb, var(--red) 45%, var(--line)); background: color-mix(in srgb, var(--paper-raised) 75%, var(--red) 5%); box-shadow: 0 4px 12px color-mix(in srgb, var(--red) 8%, transparent); transform: translateY(-2px); }
+.timeline-chip:hover span { color: var(--red); }
+.timeline-chip:hover .arrow { color: var(--red); transform: translate(2px, -2px); }
+.timeline-chip--link { color: var(--red-dark); }
+.timeline-education-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 16px; padding-top: 4px; }
+.timeline-edu-card { padding: 16px; border: 1px solid color-mix(in srgb, var(--line) 80%, transparent); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--paper-raised) 94%, var(--ink)); }
+.timeline-edu-period { color: var(--red-dark); font: 9px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.timeline-edu-degree { margin: 6px 0 4px; color: var(--ink); font: 500 13px/1.3 var(--sans); }
+.timeline-edu-school { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+
 /* Contact terminal */
 .contact-terminal { display: grid; grid-template-columns: .86fr 1.15fr .78fr; min-height: 270px; overflow: hidden; border: 1px solid #33343b; border-radius: var(--radius-card); color: #eae8e3; background: #1b1c21; box-shadow: var(--shadow-md); }
 .contact-intro, .contact-console, .contact-examples { padding: 34px 30px; }
@@ -516,12 +535,14 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
   .section-intro { max-width: 430px; text-align: left; }
   .proof-grid { grid-template-columns: 1fr; gap: 32px; }
   .experience-grid { grid-template-columns: 1fr; row-gap: 0; margin-top: 48px; margin-bottom: 56px; }
+  .experience-card { padding: 20px 18px; }
   .experience-card:first-child { grid-column: auto; }
   .experience-grid { perspective: 1100px; }
   .experience-unfold-trigger { height: 16px; margin-inline: 10px; }
   .experience-grid.is-unfolding .experience-card-details { transform: rotateX(-78deg) translateZ(1px); transition-duration: 620ms; }
   .experience-meta { flex-direction: column; align-items: flex-start; gap: 6px; }
   .experience-meta span:last-child { text-align: left; }
+  .timeline-scope { font-size: 11.5px; }
   .contact-terminal { grid-template-columns: 1fr; }
   .contact-intro, .contact-console, .contact-examples { padding: 30px 24px; }
   .contact-intro, .contact-examples { border: 0; }
@@ -560,7 +581,11 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
   .project-recognition-actions { grid-column: auto; grid-row: auto; }
   .project-recognition-media { grid-column: auto; grid-row: auto; width: 100%; height: 128px; }
   .experience-grid { perspective: 900px; }
+  .experience-card { padding: 18px 14px; }
   .experience-unfold-trigger { height: 14px; margin-inline: 6px; border-radius: 0 0 9px 9px; }
+  .timeline-chips { display: flex; flex-direction: column; gap: 7px; width: 100%; }
+  .timeline-chip { width: 100%; justify-content: space-between; padding: 9px 12px; }
+  .timeline-education-grid { grid-template-columns: 1fr; gap: 12px; }
   .credential-card { grid-template-columns: 32px minmax(0, 1fr); gap: 9px; padding-inline: 5px; }
   .credential-status { grid-column: 2; margin-top: -4px; }
 }
