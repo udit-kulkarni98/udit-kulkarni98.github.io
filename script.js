@@ -347,27 +347,68 @@
     link.setAttribute('rel', 'noreferrer');
   });
 
-  // Resume download engine with dynamic date timestamp and cache busting
-  const getResumeFilename = () => {
+  // Resume download engine with dynamic date timestamp, cache busting, and version selection
+  const getResumeFilename = (version = 'full') => {
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
+    if (version === '1page') {
+      return `Udit_Kulkarni_Resume_1Page_${year}-${month}-${day}.pdf`;
+    }
     return `Udit_Kulkarni_Resume_${year}-${month}-${day}.pdf`;
   };
 
   const syncResumeLinks = () => {
-    const filename = getResumeFilename();
-    const freshUrl = `./Udit-Kulkarni_Resume.pdf?v=${Date.now()}`;
-    $$('[data-resume-download], a[href*="Resume.pdf"]').forEach(link => {
-      link.setAttribute('download', filename);
-      link.setAttribute('href', freshUrl);
+    const now = Date.now();
+    const file1Page = getResumeFilename('1page');
+    const fileFull = getResumeFilename('full');
+    const url1Page = `./Udit-Kulkarni_Resume_1Page.pdf?v=${now}`;
+    const urlFull = `./Udit-Kulkarni_Resume.pdf?v=${now}`;
+
+    $$('[data-resume-file="1page"]').forEach(link => {
+      link.setAttribute('download', file1Page);
+      link.setAttribute('href', url1Page);
     });
+    $$('[data-resume-file="full"]').forEach(link => {
+      link.setAttribute('download', fileFull);
+      link.setAttribute('href', urlFull);
+    });
+    const mainResumeLink = $('#resume-download-link');
+    if (mainResumeLink) {
+      mainResumeLink.setAttribute('download', fileFull);
+      mainResumeLink.setAttribute('href', urlFull);
+    }
+  };
+
+  const resumeModal = $('#resume-modal');
+  let resumeModalReturnFocus = null;
+  const openResumeModal = () => {
+    if (!resumeModal) return;
+    syncResumeLinks();
+    resumeModalReturnFocus = document.activeElement;
+    if (!resumeModal.open) resumeModal.showModal();
+  };
+  const closeResumeModal = () => {
+    resumeModal?.close();
   };
 
   const initResumeDownloadLinks = () => {
     syncResumeLinks();
-    $$('[data-resume-download], a[href*="Resume.pdf"]').forEach(link => {
+    $('#resume-download-link')?.addEventListener('click', event => {
+      event.preventDefault();
+      openResumeModal();
+    });
+    $$('[data-resume-modal-close]').forEach(button => button.addEventListener('click', closeResumeModal));
+    resumeModal?.addEventListener('click', event => {
+      if (event.target === resumeModal) closeResumeModal();
+    });
+    resumeModal?.addEventListener('close', () => {
+      resumeModalReturnFocus?.focus?.({ preventScroll: true });
+      resumeModalReturnFocus = null;
+    });
+
+    $$('[data-resume-file]').forEach(link => {
       link.addEventListener('pointerenter', syncResumeLinks);
       link.addEventListener('focus', syncResumeLinks);
       link.addEventListener('pointerdown', syncResumeLinks);
@@ -630,10 +671,10 @@
   const terminalInput = $('#console-input');
   const terminalStatus = $('#console-status');
   const terminalPrefix = 'php artisan';
-  const terminalCommands = ['help', 'about', 'skills', 'projects', 'experience', 'contact', 'resume', 'github', 'linkedin', 'email', 'clear', 'theme', 'history'];
+  const terminalCommands = ['help', 'about', 'skills', 'projects', 'experience', 'contact', 'resume', 'resume:1page', 'resume:full', 'github', 'linkedin', 'email', 'clear', 'theme', 'history'];
   const fullCommand = command => `${terminalPrefix} ${command}`;
   const commandDescriptions = {
-    help: 'Show available commands', about: 'Read the professional summary', skills: 'Explore technical focus areas', projects: 'See selected systems and platforms', experience: 'View work history and education', contact: 'Show contact details', resume: 'Download the PDF resume', github: 'Open GitHub profile', linkedin: 'Open LinkedIn profile', email: 'Compose an email', clear: 'Clear terminal output', theme: 'Cycle light, dark, or auto', history: 'Show command history'
+    help: 'Show available commands', about: 'Read the professional summary', skills: 'Explore technical focus areas', projects: 'See selected systems and platforms', experience: 'View work history and education', contact: 'Show contact details', resume: 'Choose & download resume (modal & options)', 'resume:1page': 'Download 1-page condensed resume (PDF)', 'resume:full': 'Download full 2-page detailed resume (PDF)', github: 'Open GitHub profile', linkedin: 'Open LinkedIn profile', email: 'Compose an email', clear: 'Clear terminal output', theme: 'Cycle light, dark, or auto', history: 'Show command history'
   };
   state.terminalHistory = state.terminalHistory.map(command => {
     const normalized = command.trim().toLowerCase().replace(/\s+/g, ' ');
@@ -677,7 +718,10 @@
   const parseCommand = rawInput => {
     const normalizedInput = rawInput.trim().toLowerCase().replace(/\s+/g, ' ');
     const match = normalizedInput.match(/^php artisan(?:\s+(.+))?$/);
-    return { normalizedInput, command: match?.[1] || '' };
+    let command = match?.[1] || '';
+    if (command === 'resume 1page' || command === 'resume 1' || command === 'resume --1page') command = 'resume:1page';
+    if (command === 'resume full' || command === 'resume 2' || command === 'resume --full') command = 'resume:full';
+    return { normalizedInput, command };
   };
   const runCommand = rawInput => {
     const { normalizedInput, command } = parseCommand(rawInput);
@@ -719,9 +763,30 @@
         writeTerminal('Mumbai, India · <a class="terminal-link" href="mailto:udit.kulkarni98@gmail.com">udit.kulkarni98@gmail.com</a> · 9892955429');
         break;
       case 'resume': {
-        const filename = getResumeFilename();
+        const url1 = `./Udit-Kulkarni_Resume_1Page.pdf?v=${Date.now()}`;
+        const file1 = getResumeFilename('1page');
+        const urlFull = `./Udit-Kulkarni_Resume.pdf?v=${Date.now()}`;
+        const fileFull = getResumeFilename('full');
+        writeTerminal(`Resume format options:<div class="terminal-command-list" style="margin-top:5px;"><span class="terminal-help-row"><a class="terminal-link" href="${url1}" download="${file1}">📄 1-Page Resume (Condensed)</a><span>Quick recruiter scan</span></span><span class="terminal-help-row"><a class="terminal-link" href="${urlFull}" download="${fileFull}">📋 Full 2-Page Resume (Detailed)</a><span>Comprehensive architecture &amp; projects</span></span></div><div style="margin-top:6px; color:#888;">Opening format selector… Run <code>php artisan resume:1page</code> or <code>php artisan resume:full</code> for direct download.</div>`);
+        openResumeModal();
+        break;
+      }
+      case 'resume:1page': {
+        const filename = getResumeFilename('1page');
+        const url = `./Udit-Kulkarni_Resume_1Page.pdf?v=${Date.now()}`;
+        writeTerminal(`Downloading 1-Page Resume: <a class="terminal-link" href="${url}" download="${filename}">${escapeHTML(filename)}</a>…`);
+        const tempLink = document.createElement('a');
+        tempLink.href = url;
+        tempLink.download = filename;
+        document.body.append(tempLink);
+        tempLink.click();
+        tempLink.remove();
+        break;
+      }
+      case 'resume:full': {
+        const filename = getResumeFilename('full');
         const url = `./Udit-Kulkarni_Resume.pdf?v=${Date.now()}`;
-        writeTerminal(`Downloading <a class="terminal-link" href="${url}" download="${filename}">${escapeHTML(filename)}</a>…`);
+        writeTerminal(`Downloading Full 2-Page Resume: <a class="terminal-link" href="${url}" download="${filename}">${escapeHTML(filename)}</a>…`);
         const tempLink = document.createElement('a');
         tempLink.href = url;
         tempLink.download = filename;
@@ -855,7 +920,7 @@
 
   document.addEventListener('keydown', event => {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); openPalette(); }
-    if (event.key === 'Escape') { closeMenu(); closeThemeMenu(); closePalette(); }
+    if (event.key === 'Escape') { closeMenu(); closeThemeMenu(); closePalette(); closeResumeModal(); }
   });
 
   // Remove the loader after the first paint. The page stays usable if JS is slow or unavailable.
