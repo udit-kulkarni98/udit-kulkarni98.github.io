@@ -1,0 +1,208 @@
+%-------------------------
+% Udit Kulkarni — Resume
+% Based on Jake's Resume / sb2nov template (MIT License)
+% Compile with pdfLaTeX on Overleaf
+%-------------------------
+
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+%----------FONT----------
+\usepackage[default]{sourcesanspro}
+\usepackage[T1]{fontenc}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\footskip}{4.1pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.6in}
+\addtolength{\textwidth}{1.2in}
+\addtolength{\topmargin}{-0.65in}
+\addtolength{\textheight}{1.3in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-5pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+%-------------------------
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item\hspace{6pt}
+    \begin{tabular*}{0.95\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\Huge \textbf{Udit Kulkarni}} \\ \vspace{4pt}
+    \small
+    \href{tel:+919892955429}{\underline{+91 9892955429}} $|$
+    \href{mailto:udit.kulkarni98@gmail.com}{\underline{udit.kulkarni98@gmail.com}} $|$
+    Mumbai, India $|$
+    \href{https://udit-kulkarni98.github.io/}{\underline{Portfolio}} $|$
+    \href{https://github.com/udit-kulkarni98}{\underline{GitHub}} $|$
+    \href{https://www.linkedin.com/in/udit-kulkarni/}{\underline{LinkedIn}}
+\end{center}
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages \& Frameworks}{: Python, FastAPI, PHP, Laravel, JavaScript, ReactJS, REST APIs, GraphQL, WebSockets, HTML/CSS} \\
+     \textbf{AI / ML Systems}{: LangGraph, LangChain, Multi-Agent Systems, RAG, Qdrant, Text-to-SQL, Azure AI Foundry, GPT-Live-1} \\
+     \textbf{Databases \& Cloud}{: MySQL, Elasticsearch, Redis, AWS (ECS, ECR, S3, CloudFront), Docker, Linux, Nginx, Git, CI/CD}
+    }}
+ \end{itemize}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Software Developer $|$ \textit{\textnormal{Publicis Digital Experience (Publicis Groupe)}}}{May 2026 -- Present}
+      {Mumbai, India}{}
+
+      \vspace{-2pt}
+      \resumeProjectHeading
+          {$\triangleright$\ \textbf{Project: HINCOL --- Enterprise B2B Platform (77+ Modules)} $|$ \emph{Laravel, SAP, AWS S3, MySQL}}{\href{https://udit-kulkarni98.github.io/assets/wow@work.png}{\underline{\textbf{Wow@Work Award}}}}
+      \resumeItemListStart
+        \resumeItem{Created a multi-criteria \textbf{Lead Scoring \& Qualification engine} processing 800--1,500 leads/month across 5 zones, cutting qualification from $\sim$15 min to $<$ \textbf{1 s} and saving 60--80 hours/month of manual vetting.}
+        \resumeItem{Designed an event-driven \textbf{Key Account Management} engine for 2,500 active accounts with \textbf{S3} audit trails, replacing quarterly spreadsheet reviews with automated batch re-evaluation and a cross-sell whitespace matrix.}
+      \resumeItemListEnd
+
+      \resumeProjectHeading
+          {$\triangleright$\ \textbf{Project: HincolBot --- Full-Duplex Voice Agent} $|$ \emph{FastAPI, WebSockets, Azure AI Foundry, Redis}}{}
+      \resumeItemListStart
+        \resumeItem{Reduced CRM/ERP data-entry time by \textbf{80\%} (15 min $\to$ $<$ 2 min per opportunity) across 5 national zones by building a full-duplex voice application with \textbf{Redis} conversational memory and persistent session summaries.}
+        \resumeItem{Implemented \textbf{24 kHz PCM16 bidirectional streaming} over authenticated WebSockets using GPT-Live-1, achieving $<$ \textbf{200 ms} audio-response latency with real-time barge-in.}
+      \resumeItemListEnd
+
+      \resumeProjectHeading
+          {$\triangleright$\ \textbf{Project: Strategic Sales Agent} $|$ \emph{LangGraph, Qdrant, Text-to-SQL, LangSmith, Redis}}{}
+      \resumeItemListStart
+        \resumeItem{Built a \textbf{LangGraph StateGraph} agent with hybrid entity disambiguation across 4,628 master vectors (\textbf{Qdrant} dense retrieval + lexical SQL), achieving \textbf{98.4\%} accuracy over 500 conversational test cases.}
+        \resumeItem{Engineered a read-only \textbf{Text-to-SQL} service with vector schema discovery, sensitive-column masking, SSE streaming, and HITL safeguards including \textbf{Zero-Delete} protection and zone-scoped RBAC.}
+      \resumeItemListEnd
+
+      \resumeProjectHeading
+          {$\triangleright$\ \textbf{Project: P.D. Hinduja Hospital --- Healthcare RAG} $|$ \emph{Python, FastAPI, Qdrant, LangChain}}{}
+      \resumeItemListStart
+        \resumeItem{Developed a \textbf{Healthcare RAG} system serving \textbf{260+ doctors} across \textbf{90 specialties} for symptom triage, doctor discovery, and real-time OPD booking across 2 hospital units (Mahim \& Khar).}
+        \resumeItem{Implemented \textbf{hybrid retrieval} (70\% dense / 30\% BM25) over 3,096 clinical chunks with \textbf{cross-encoder reranking} (\texttt{bge-reranker-base}), narrowing pools to 6--12 grounded chunks.}
+        \resumeItem{Integrated async multi-turn state machine with \textbf{HIS}, SMS OTP, and \textbf{BillDesk} payments (HMAC-SHA256); stress-tested with 250 concurrent bookings --- \textbf{96.6\%} pass rate across 320+ automated tests.}
+      \resumeItemListEnd
+
+    \vspace{3pt}
+    \resumeSubheading
+      {Associate Software Developer $|$ \textit{\textnormal{Publicis Digital Experience (Publicis Groupe)}}}{Jan 2023 -- May 2026}
+      {Mumbai, India}{}
+
+      \vspace{-2pt}
+      \resumeProjectHeading
+          {$\triangleright$\ \textbf{Project: Citro\"{e}n \& Disney+ Hotstar Digital Platforms} $|$ \emph{Drupal, PHP, Docker, AWS ECS, Redis}}{}
+      \resumeItemListStart
+        \resumeItem{Built the \textbf{Citro\"{e}n Dealer Locator REST API} aggregating Stellantis/PSA global APIs and localized databases for \textbf{1.5 M+} monthly visitors with 50+ RPS peak traffic during national campaigns.}
+        \resumeItem{Implemented geo-spatial dealer matching with \textbf{Haversine distance} ($<$ 350 ms latency); deployed containerized microservices on \textbf{Docker, AWS ECS/ECR, S3, CloudFront, and Redis}.}
+        \resumeItem{Delivered 12+ REST API modules in \textbf{Drupal/PHP} with automated vehicle-data ingestion across 1,000+ dealers; built \textbf{Disney+ Hotstar} campaign CMS and boosted page-load performance by \textbf{25\%}.}
+      \resumeItemListEnd
+
+    \vspace{3pt}
+    \resumeSubheading
+      {Software Developer \& PM Intern $|$ \textit{\textnormal{Publicis Media (Publicis Groupe)}}}{Jan 2022 -- Jul 2022}
+      {Mumbai, India}{\href{https://github.com/udit-kulkarni98/Certificates/blob/main/InternshipCertificate.pdf}{\underline{View Certificate}}}
+
+      \vspace{-2pt}
+      \resumeProjectHeading
+          {$\triangleright$\ \textbf{Project: Headless E-Commerce Platform (Magento 2)} $|$ \emph{PWA Studio, React, GraphQL, Elasticsearch}}{}
+      \resumeItemListStart
+        \resumeItem{Developed custom \textbf{Magento 2} modules for an e-commerce POC with PWA Studio using PHP, JavaScript and React; built \textbf{GraphQL} APIs with \textbf{Elasticsearch} and MySQL. Coordinated Agile sprint delivery (Gantt/WBS) across cross-functional teams.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Sardar Patel Institute of Technology (SPIT), Mumbai}{2021 -- 2022}
+      {Master of Computer Applications --- Machine Learning; \, CGPA: 8.65 / 10}{\href{https://github.com/udit-kulkarni98/Certificates/blob/main/PGDegree_Certificate_Udit_Kulkarni_MCA.jpeg}{\underline{View Degree}}}
+  \resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS-----------
+\section{Certifications}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+       AI-900: Microsoft Azure AI Fundamentals --- Microsoft & \href{https://www.udemy.com/certificate/UC-870976ff-0969-4d36-89ee-fae6742af858/}{\underline{Verify}} \\
+       Master RAG: Retrieval-Augmented Generation Systems --- Udemy & \href{https://www.udemy.com/certificate/UC-cb786c10-6972-4303-923e-910806378736/}{\underline{Verify}} \\
+       Software Architecture \& Design of Modern Large Scale Systems --- Udemy & \href{https://www.udemy.com/certificate/UC-49d68025-9d0c-4b18-a53d-928297b06204/}{\underline{Verify}} \\
+       Microsoft Technology Associate (MTA): Security Fundamentals --- Microsoft & \href{https://github.com/udit-kulkarni98/Certificates/blob/main/MTA.pdf}{\underline{View}} \\
+       GitHub Copilot for Developers: Code Faster With AI Agents --- Udemy & \href{https://www.udemy.com/certificate/UC-15c19ecb-5e9b-45ef-8883-c07f595696bf/}{\underline{Verify}} \\
+     \end{tabular*}
+    }}
+ \end{itemize}
+
+%-------------------------------------------
+\end{document}
