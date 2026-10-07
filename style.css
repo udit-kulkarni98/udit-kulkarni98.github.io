@@ -158,10 +158,10 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
 .hero h1 em { color: var(--red); font-style: normal; }
 .hero-copy { max-width: 780px; margin: 32px 0 38px; color: var(--muted); font-size: 16.5px; line-height: 1.82; }
 .button-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-.stats-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 68px; padding-top: 34px; border-top: 1px solid var(--line); }
-.stat { min-height: 72px; padding: 4px 18px; border-left: 1px solid var(--line-strong); }
-.stat strong { display: block; color: var(--red); font: 400 clamp(19px, 1.9vw, 25px)/1.15 var(--serif); letter-spacing: -.03em; }
-.stat span { display: block; margin-top: 7px; color: var(--muted); font-size: 11px; line-height: 1.45; }
+.stats-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 68px; padding-top: 34px; border-top: 1px solid var(--line); }
+.stat { min-height: 72px; padding: 4px 20px; border-left: 1px solid var(--line-strong); }
+.stat strong { display: block; color: var(--red); font: 400 clamp(20px, 2.1vw, 27px)/1.15 var(--serif); letter-spacing: -.03em; }
+.stat span { display: block; margin-top: 7px; color: var(--muted); font-size: 11.5px; line-height: 1.45; }
 
 /* Projects */
 .projects { padding: var(--space-7) 0 104px; background: var(--paper-raised); }
