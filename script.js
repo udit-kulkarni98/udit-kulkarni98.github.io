@@ -17,18 +17,8 @@
     }
   };
 
-  const readHistory = () => {
-    try {
-      const parsed = JSON.parse(storage.get('udit-terminal-history', '[]') || '[]');
-      return Array.isArray(parsed) ? parsed.filter(item => typeof item === 'string').slice(-30) : [];
-    } catch { return []; }
-  };
-
   const state = {
     theme: storage.get('udit-theme', 'dark'),
-    terminalHistory: readHistory(),
-    historyIndex: -1,
-    paletteIndex: 0,
     scrollTicking: false,
     pointerTicking: false
   };
@@ -347,58 +337,33 @@
     link.setAttribute('rel', 'noreferrer');
   });
 
-  // Resume download engine with dynamic date timestamp, cache busting, and version selection
-  const getResumeFilename = (version = 'full') => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    if (version === '1page') {
-      return `Udit_Kulkarni_Resume_1Page_${year}-${month}-${day}.pdf`;
-    }
-    return `Udit_Kulkarni_Resume_${year}-${month}-${day}.pdf`;
-  };
-
-  const syncResumeLinks = () => {
-    const now = Date.now();
-    const file1Page = getResumeFilename('1page');
-    const fileFull = getResumeFilename('full');
-    const url1Page = `./Udit-Kulkarni_Resume_1Page.pdf?v=${now}`;
-    const urlFull = `./Udit-Kulkarni_Resume.pdf?v=${now}`;
-
-    $$('[data-resume-file="1page"]').forEach(link => {
-      link.setAttribute('download', file1Page);
-      link.setAttribute('href', url1Page);
-    });
-    $$('[data-resume-file="full"]').forEach(link => {
-      link.setAttribute('download', fileFull);
-      link.setAttribute('href', urlFull);
-    });
-    const mainResumeLink = $('#resume-download-link');
-    if (mainResumeLink) {
-      mainResumeLink.setAttribute('download', fileFull);
-      mainResumeLink.setAttribute('href', urlFull);
-    }
-  };
-
+  // Resume modal and downloads
   const resumeModal = $('#resume-modal');
   let resumeModalReturnFocus = null;
+
   const openResumeModal = () => {
     if (!resumeModal) return;
-    syncResumeLinks();
     resumeModalReturnFocus = document.activeElement;
     if (!resumeModal.open) resumeModal.showModal();
   };
+
   const closeResumeModal = () => {
     resumeModal?.close();
   };
 
   const initResumeDownloadLinks = () => {
-    syncResumeLinks();
     $('#resume-download-link')?.addEventListener('click', event => {
       event.preventDefault();
       openResumeModal();
     });
+
+    $$('[data-open-resume-modal]').forEach(trigger => {
+      trigger.addEventListener('click', event => {
+        event.preventDefault();
+        openResumeModal();
+      });
+    });
+
     $$('[data-resume-modal-close]').forEach(button => button.addEventListener('click', closeResumeModal));
     resumeModal?.addEventListener('click', event => {
       if (event.target === resumeModal) closeResumeModal();
@@ -406,12 +371,6 @@
     resumeModal?.addEventListener('close', () => {
       resumeModalReturnFocus?.focus?.({ preventScroll: true });
       resumeModalReturnFocus = null;
-    });
-
-    $$('[data-resume-file]').forEach(link => {
-      link.addEventListener('pointerenter', syncResumeLinks);
-      link.addEventListener('focus', syncResumeLinks);
-      link.addEventListener('pointerdown', syncResumeLinks);
     });
   };
   initResumeDownloadLinks();
@@ -666,261 +625,12 @@
     projectModalReturnFocus = null;
   });
 
-  // Terminal command engine.
-  const terminalOutput = $('#console-output');
-  const terminalInput = $('#console-input');
-  const terminalStatus = $('#console-status');
-  const terminalPrefix = 'php artisan';
-  const terminalCommands = ['help', 'about', 'skills', 'projects', 'experience', 'contact', 'resume', 'resume:1page', 'resume:full', 'github', 'linkedin', 'email', 'clear', 'theme', 'history'];
-  const fullCommand = command => `${terminalPrefix} ${command}`;
-  const commandDescriptions = {
-    help: 'Show available commands', about: 'Read the professional summary', skills: 'Explore technical focus areas', projects: 'See selected systems and platforms', experience: 'View work history and education', contact: 'Show contact details', resume: 'Choose & download resume (modal & options)', 'resume:1page': 'Download 1-page condensed resume (PDF)', 'resume:full': 'Download full 2-page detailed resume (PDF)', github: 'Open GitHub profile', linkedin: 'Open LinkedIn profile', email: 'Compose an email', clear: 'Clear terminal output', theme: 'Cycle light, dark, or auto', history: 'Show command history'
-  };
-  state.terminalHistory = state.terminalHistory.map(command => {
-    const normalized = command.trim().toLowerCase().replace(/\s+/g, ' ');
-    return normalized.startsWith(`${terminalPrefix} `) ? normalized : fullCommand(normalized);
-  }).filter(command => terminalCommands.includes(command.slice(terminalPrefix.length + 1)));
-  storage.set('udit-terminal-history', JSON.stringify(state.terminalHistory));
-  const escapeHTML = value => String(value).replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
-  const writeTerminal = (content, type = '') => {
-    if (!terminalOutput) return;
-    const line = document.createElement('div');
-    line.className = `terminal-result${type ? ` terminal-result--${type}` : ''}`;
-    line.innerHTML = content;
-    terminalOutput.append(line);
-    terminalOutput.scrollTop = terminalOutput.scrollHeight;
-  };
-
-  const bootTyping = () => {
-    const typingTarget = $('[data-typing]');
-    if (!typingTarget || reduceMotionQuery.matches) return;
-    const commands = ['php artisan optimize', 'php artisan queue:work', 'php artisan test'];
-    let commandIndex = 0;
-    const typeCommand = () => {
-      const text = commands[commandIndex];
-      typingTarget.textContent = '';
-      let index = 0;
-      const interval = window.setInterval(() => {
-        typingTarget.textContent += text[index++];
-        if (index >= text.length) {
-          window.clearInterval(interval);
-          window.setTimeout(() => {
-            commandIndex = (commandIndex + 1) % commands.length;
-            typeCommand();
-          }, 3200);
-        }
-      }, 35);
-    };
-    typeCommand();
-  };
-  window.setTimeout(bootTyping, 520);
-  const setTerminalStatus = message => { if (terminalStatus) terminalStatus.textContent = message; };
-  const parseCommand = rawInput => {
-    const normalizedInput = rawInput.trim().toLowerCase().replace(/\s+/g, ' ');
-    const match = normalizedInput.match(/^php artisan(?:\s+(.+))?$/);
-    let command = match?.[1] || '';
-    if (command === 'resume 1page' || command === 'resume 1' || command === 'resume --1page') command = 'resume:1page';
-    if (command === 'resume full' || command === 'resume 2' || command === 'resume --full') command = 'resume:full';
-    return { normalizedInput, command };
-  };
-  const runCommand = rawInput => {
-    const { normalizedInput, command } = parseCommand(rawInput);
-    if (!normalizedInput) return;
-    if (command && command !== 'clear' && terminalCommands.includes(command)) {
-      state.terminalHistory = [...state.terminalHistory.filter(item => item !== normalizedInput), normalizedInput].slice(-30);
-      storage.set('udit-terminal-history', JSON.stringify(state.terminalHistory));
-    }
-    state.historyIndex = state.terminalHistory.length;
-    writeTerminal(`<span class="terminal-prompt">udit@portfolio:~$</span> ${escapeHTML(rawInput)}`, 'command');
-    setTerminalStatus('');
-
-    if (!command) {
-      writeTerminal(`Use <span class="terminal-green">${terminalPrefix} &lt;command&gt;</span>. Type <span class="terminal-green">${fullCommand('help')}</span> to see the list.`, 'error');
-      return;
-    }
-    if (!terminalCommands.includes(command)) {
-      writeTerminal(`Unknown command: ${escapeHTML(command)}. Type <span class="terminal-green">${fullCommand('help')}</span> for the command list.`, 'error');
-      return;
-    }
-
-    switch (command) {
-      case 'help':
-        writeTerminal(`<span class="terminal-green">Available commands:</span><div class="terminal-command-list">${terminalCommands.map(item => `<span class="terminal-help-row"><code>${fullCommand(item)}</code><span>${commandDescriptions[item]}</span></span>`).join('')}</div>`);
-        break;
-      case 'about':
-        writeTerminal('Software Engineer with a Master’s in Computer Applications (Machine Learning), working across Laravel/PHP and Python/FastAPI. Experience building backend systems, RAG and voice applications, Text-to-SQL services, CRM/ERP platforms, high-concurrency APIs, and third-party integrations.');
-        break;
-      case 'skills':
-        writeTerminal('Backend: PHP, Laravel, Python, FastAPI, Magento 2, Drupal, Symfony, WebSockets · Frontend: JavaScript, ReactJS, HTML/CSS, Tailwind CSS · Data, Cloud &amp; DevOps: SQL, MySQL, SQLite, Redis, AWS, Docker, Linux, Nginx, GitHub/GitLab CI, Jenkins');
-        break;
-      case 'projects':
-        writeTerminal('HINCOL Sales &amp; Operations Platform · Hincol — Voice Assistant AI · Strategic Sales Agent · Hinduja Hospital — Healthcare RAG · Citroën Dealer Locator REST API · Disney+ Hotstar Campaign CMS');
-        break;
-      case 'experience':
-        writeTerminal('Publicis Digital Experience (Jan 2025 – Present): Software Developer (HINCOL &amp; Hinduja Hospital) · Razorfish (Jan 2023 – Dec 2024): Software Developer &amp; Delivery (Disney+ Hotstar &amp; Citroën) · Publicis Media (Jan 2022 – Jul 2022): Software Developer &amp; Project Management Intern (Magento 2, PWA Studio, GraphQL) · Education: MCA (Machine Learning) SPIT Mumbai (8.65 / 10 CGPI) &amp; B.Sc. Computer Science DG Ruparel College (7.91 / 10 CGPI)');
-        break;
-      case 'contact':
-        writeTerminal('Mumbai, India · <a class="terminal-link" href="mailto:udit.kulkarni98@gmail.com">udit.kulkarni98@gmail.com</a> · 9892955429');
-        break;
-      case 'resume': {
-        const url1 = `./Udit-Kulkarni_Resume_1Page.pdf?v=${Date.now()}`;
-        const file1 = getResumeFilename('1page');
-        const urlFull = `./Udit-Kulkarni_Resume.pdf?v=${Date.now()}`;
-        const fileFull = getResumeFilename('full');
-        writeTerminal(`Resume format options:<div class="terminal-command-list" style="margin-top:5px;"><span class="terminal-help-row"><a class="terminal-link" href="${url1}" download="${file1}">📄 1-Page Resume (Condensed)</a><span>Quick recruiter scan</span></span><span class="terminal-help-row"><a class="terminal-link" href="${urlFull}" download="${fileFull}">📋 Full 2-Page Resume (Detailed)</a><span>Comprehensive architecture &amp; projects</span></span></div><div style="margin-top:6px; color:#888;">Opening format selector… Run <code>php artisan resume:1page</code> or <code>php artisan resume:full</code> for direct download.</div>`);
-        openResumeModal();
-        break;
-      }
-      case 'resume:1page': {
-        const filename = getResumeFilename('1page');
-        const url = `./Udit-Kulkarni_Resume_1Page.pdf?v=${Date.now()}`;
-        writeTerminal(`Downloading 1-Page Resume: <a class="terminal-link" href="${url}" download="${filename}">${escapeHTML(filename)}</a>…`);
-        const tempLink = document.createElement('a');
-        tempLink.href = url;
-        tempLink.download = filename;
-        document.body.append(tempLink);
-        tempLink.click();
-        tempLink.remove();
-        break;
-      }
-      case 'resume:full': {
-        const filename = getResumeFilename('full');
-        const url = `./Udit-Kulkarni_Resume.pdf?v=${Date.now()}`;
-        writeTerminal(`Downloading Full 2-Page Resume: <a class="terminal-link" href="${url}" download="${filename}">${escapeHTML(filename)}</a>…`);
-        const tempLink = document.createElement('a');
-        tempLink.href = url;
-        tempLink.download = filename;
-        document.body.append(tempLink);
-        tempLink.click();
-        tempLink.remove();
-        break;
-      }
-      case 'github':
-        writeTerminal('Opening <a class="terminal-link" href="https://github.com/udit-kulkarni98" target="_blank" rel="noreferrer">github.com/udit-kulkarni98</a>…');
-        window.open('https://github.com/udit-kulkarni98', '_blank', 'noopener,noreferrer');
-        break;
-      case 'linkedin':
-        writeTerminal('Opening <a class="terminal-link" href="https://linkedin.com/in/udit-kulkarni" target="_blank" rel="noreferrer">linkedin.com/in/udit-kulkarni</a>…');
-        window.open('https://linkedin.com/in/udit-kulkarni', '_blank', 'noopener,noreferrer');
-        break;
-      case 'email':
-        writeTerminal(`Opening <a class="terminal-link" href="${webmailHref}" target="_blank" rel="noreferrer">Gmail compose</a>…`);
-        window.open(webmailHref, '_blank', 'noopener,noreferrer');
-        break;
-      case 'clear':
-        if (terminalOutput) terminalOutput.replaceChildren();
-        break;
-      case 'theme': {
-        applyTheme(state.theme === 'light' ? 'dark' : state.theme === 'dark' ? 'auto' : 'light');
-        writeTerminal(`Theme set to <span class="terminal-green">${state.theme}</span>.`);
-        break;
-      }
-      case 'history':
-        writeTerminal(state.terminalHistory.length ? state.terminalHistory.map((item, index) => `${index + 1}  ${escapeHTML(item)}`).join('<br>') : 'No commands yet.');
-        break;
-      default:
-        break;
-    }
-  };
-  const submitTerminal = () => {
-    if (!terminalInput) return;
-    const value = terminalInput.value;
-    if (!value.trim()) return;
-    runCommand(value);
-    terminalInput.value = '';
-  };
-  $('#console-form')?.addEventListener('submit', event => {
-    event.preventDefault();
-    submitTerminal();
-  });
-  terminalInput?.addEventListener('keydown', event => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      submitTerminal();
-    }
-    if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      if (!state.terminalHistory.length) return;
-      state.historyIndex = Math.max(0, state.historyIndex - 1);
-      terminalInput.value = state.terminalHistory[state.historyIndex] || '';
-    }
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      state.historyIndex = Math.min(state.terminalHistory.length, state.historyIndex + 1);
-      terminalInput.value = state.terminalHistory[state.historyIndex] || '';
-    }
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      const value = terminalInput.value.trim().toLowerCase().replace(/\s+/g, ' ');
-      const matches = terminalCommands.map(fullCommand).filter(command => command.startsWith(value));
-      if (matches.length === 1) terminalInput.value = matches[0];
-      else if (matches.length > 1) setTerminalStatus(matches.join('  ·  '));
-    }
-  });
-  $$('[data-command]').forEach(button => button.addEventListener('click', () => { terminalInput?.focus(); runCommand(button.dataset.command); }));
-
-  // Command palette, opened by Ctrl/Cmd + K.
-  const paletteBackdrop = $('#command-palette');
-  const paletteInput = $('#palette-input');
-  const paletteList = $('#palette-list');
-  let paletteReturnFocus = null;
-  const closePalette = () => {
-    paletteBackdrop?.classList.remove('is-open');
-    paletteBackdrop?.setAttribute('aria-hidden', 'true');
-    (paletteReturnFocus || $('#palette-button'))?.focus({ preventScroll: true });
-    paletteReturnFocus = null;
-  };
-  const renderPalette = query => {
-    if (!paletteList) return;
-    const filtered = terminalCommands.filter(command => `${fullCommand(command)} ${commandDescriptions[command]}`.toLowerCase().includes(query.toLowerCase()));
-    state.paletteIndex = Math.min(state.paletteIndex, Math.max(0, filtered.length - 1));
-    paletteList.replaceChildren(...filtered.map((command, index) => {
-      const button = document.createElement('button');
-      button.className = 'palette-item';
-      button.type = 'button';
-      button.dataset.command = fullCommand(command);
-      button.setAttribute('role', 'option');
-      button.setAttribute('aria-selected', String(index === state.paletteIndex));
-      button.innerHTML = `<code>${fullCommand(command)}</code><small>${commandDescriptions[command]}</small>`;
-      button.addEventListener('click', () => { closePalette(); terminalInput?.focus(); runCommand(fullCommand(command)); });
-      return button;
-    }));
-  };
-  const openPalette = () => {
-    if (!paletteBackdrop) return;
-    paletteReturnFocus = document.activeElement;
-    paletteBackdrop.classList.add('is-open');
-    paletteBackdrop.setAttribute('aria-hidden', 'false');
-    state.paletteIndex = 0;
-    renderPalette('');
-    window.setTimeout(() => paletteInput?.focus(), 20);
-  };
-  $('#palette-button')?.addEventListener('click', openPalette);
-  paletteInput?.addEventListener('input', () => { state.paletteIndex = 0; renderPalette(paletteInput.value); });
-  paletteInput?.addEventListener('keydown', event => {
-    const items = $$('.palette-item', paletteList);
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-      event.preventDefault();
-      if (!items.length) return;
-      state.paletteIndex = (state.paletteIndex + (event.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
-      items.forEach((item, index) => item.setAttribute('aria-selected', String(index === state.paletteIndex)));
-    }
-    if (event.key === 'Enter') items[state.paletteIndex]?.click();
-  });
-  paletteBackdrop?.addEventListener('keydown', event => {
-    if (event.key !== 'Tab') return;
-    const focusable = [paletteInput, ...$$('.palette-item', paletteList)].filter(Boolean);
-    if (!focusable.length) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-  });
-  paletteBackdrop?.addEventListener('click', event => { if (event.target === paletteBackdrop) closePalette(); });
-
   document.addEventListener('keydown', event => {
-    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); openPalette(); }
-    if (event.key === 'Escape') { closeMenu(); closeThemeMenu(); closePalette(); closeResumeModal(); }
+    if (event.key === 'Escape') {
+      closeMenu();
+      closeThemeMenu();
+      closeResumeModal();
+    }
   });
 
   // Remove the loader after the first paint. The page stays usable if JS is slow or unavailable.
